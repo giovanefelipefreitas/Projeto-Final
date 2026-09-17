@@ -1,0 +1,65 @@
+<app-menu></app-menu>
+
+<main>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-texto">
+        <span class="destaque">Adoção responsável em Salvador</span>
+        <h1>Um novo lar pode começar com um clique.</h1>
+        <p>Encontre animais para adoção, conheça projetos locais e participe de uma comunidade que ajuda quem mais precisa.</p>
+        <div class="acoes">
+          <a class="botao" routerLink="/adocao">Quero adotar</a>
+          <a class="botao contorno" routerLink="/comunidade">Conhecer a comunidade</a>
+        </div>
+      </div>
+
+      <div class="hero-ilustracao" aria-label="Ilustração de cachorro e gato">
+        <div class="sol"></div>
+        <div class="animal cachorro">🐶</div>
+        <div class="animal gato">🐱</div>
+        <div class="mini-card">❤️ Adoção responsável</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao container">
+    <div class="cabecalho-secao">
+      <div>
+        <span class="destaque">Dê uma oportunidade</span>
+        <h2>Animais esperando por um lar</h2>
+      </div>
+      <a routerLink="/adocao">Ver todos →</a>
+    </div>
+    <app-carousel></app-carousel>
+  </section>
+
+  <section class="como-funciona">
+    <div class="container">
+      <div class="centro">
+        <span class="destaque">Simples e responsável</span>
+        <h2>Como funciona</h2>
+      </div>
+      <div class="passos">
+        <article><strong>1</strong><h3>Encontre</h3><p>Use os filtros para conhecer animais disponíveis em bairros de Salvador.</p></article>
+        <article><strong>2</strong><h3>Conheça</h3><p>Leia o perfil, a rotina e as necessidades do animal antes de decidir.</p></article>
+        <article><strong>3</strong><h3>Demonstre interesse</h3><p>Registre seu interesse e combine o contato com o responsável.</p></article>
+        <article><strong>4</strong><h3>Adote com responsabilidade</h3><p>Considere tempo, espaço, custos e o compromisso de longo prazo.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="container comunidade-chamada">
+    <div>
+      <span class="destaque">Nosso diferencial</span>
+      <h2>Mais do que adoção: uma comunidade de proteção animal.</h2>
+      <p>ONGs, protetores e moradores podem divulgar feiras, campanhas, pedidos de ajuda e informações úteis.</p>
+      <a class="botao secundario" routerLink="/comunidade">Entrar na comunidade</a>
+    </div>
+    <div class="feed-demo">
+      <article><b>Projeto Patinhas SSA</b><span>Evento</span><p>Feira de adoção neste sábado. Compartilhe! 🐾</p><small>❤️ 42 curtidas</small></article>
+      <article><b>Rede Animal Salvador</b><span>Ajuda</span><p>Campanha de arrecadação de ração para animais resgatados.</p><small>❤️ 31 curtidas</small></article>
+    </div>
+  </section>
+</main>
+
+<app-footer></app-footer>

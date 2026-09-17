@@ -1,0 +1,22 @@
+<app-menu></app-menu>
+
+<main class="container perfil">
+  <section class="cartao">
+    <div class="avatar">{{ usuario?.nome?.charAt(0)?.toUpperCase() || 'U' }}</div>
+    <span>Meu perfil</span>
+    <h1>{{ usuario?.nome }}</h1>
+    <p>{{ usuario?.email }}</p>
+
+    <div class="info-lgpd">
+      <h3>Seus dados neste protótipo</h3>
+      <p>O cadastro fica armazenado somente no navegador por meio do localStorage. A sessão usa sessionStorage.</p>
+    </div>
+
+    <div class="acoes">
+      <button class="botao secundario" type="button" (click)="logout()">Encerrar sessão</button>
+      <button class="excluir" type="button" (click)="excluirConta()">Excluir minha conta</button>
+    </div>
+  </section>
+</main>
+
+<app-footer></app-footer>

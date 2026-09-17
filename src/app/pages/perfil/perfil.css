@@ -1,0 +1,11 @@
+.perfil { min-height: 70vh; padding: 70px 0; display: grid; place-items: center; }
+.cartao { width: min(620px, 100%); padding: 38px; text-align: center; border-radius: 22px; background: white; box-shadow: var(--sombra); }
+.avatar { width: 90px; height: 90px; margin: 0 auto 16px; display: grid; place-items: center; border-radius: 50%; background: var(--azul); color: white; font-size: 2.3rem; font-weight: 800; }
+.cartao > span { color: var(--laranja-escuro); text-transform: uppercase; font-weight: 800; font-size: .78rem; }
+.cartao h1 { margin-top: 7px; color: var(--azul-escuro); }
+.cartao > p { margin-top: 5px; color: var(--texto-suave); }
+.info-lgpd { margin: 28px 0; padding: 18px; text-align: left; border-radius: 14px; background: var(--azul-claro); }
+.info-lgpd h3 { color: var(--azul-escuro); }
+.info-lgpd p { margin-top: 7px; color: var(--texto-suave); line-height: 1.6; }
+.acoes { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.excluir { border: 1px solid #d92d20; border-radius: 12px; padding: 10px 18px; background: white; color: #b42318; font-weight: 800; cursor: pointer; }

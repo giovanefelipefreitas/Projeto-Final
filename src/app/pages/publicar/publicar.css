@@ -1,0 +1,13 @@
+.publicar { padding: 60px 0 10px; max-width: 900px; }
+header { text-align: center; }
+header span { color: var(--laranja-escuro); text-transform: uppercase; font-weight: 800; font-size: .8rem; }
+header h1 { margin: 9px 0 12px; color: var(--azul-escuro); font-size: clamp(2.1rem, 4vw, 3.5rem); }
+header p { color: var(--texto-suave); line-height: 1.6; }
+.abas { margin: 35px auto 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 7px; background: #edf2f5; border-radius: 14px; }
+.abas button { border: 0; border-radius: 10px; padding: 12px; background: transparent; font-weight: 800; cursor: pointer; color: var(--texto-suave); }
+.abas button.ativo { background: white; color: var(--azul); box-shadow: 0 3px 10px rgba(31,62,87,.08); }
+.card-form { padding: 30px; border-radius: 20px; background: white; box-shadow: var(--sombra); }
+form { display: grid; gap: 18px; }
+.grade-form { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+.aviso { color: var(--texto-suave); font-size: .9rem; line-height: 1.5; }
+@media (max-width: 650px) { .grade-form, .abas { grid-template-columns: 1fr; } .card-form { padding: 22px; } }

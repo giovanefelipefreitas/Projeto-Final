@@ -1,0 +1,20 @@
+<div class="carousel" *ngIf="atual as pet">
+  <button class="seta esquerda" type="button" (click)="anterior()" aria-label="Animal anterior">‹</button>
+
+  <div class="slide">
+    <img [src]="pet.imagem" [alt]="pet.nome">
+    <div class="info">
+      <span class="selo">Procurando um lar</span>
+      <h3>{{ pet.nome }}</h3>
+      <p>{{ pet.especie }} · {{ pet.idade }} · {{ pet.bairro }}</p>
+      <p class="descricao">{{ pet.descricao }}</p>
+      <a class="botao" routerLink="/adocao">Ver animais para adoção</a>
+    </div>
+  </div>
+
+  <button class="seta direita" type="button" (click)="proximo()" aria-label="Próximo animal">›</button>
+
+  <div class="pontos">
+    <button *ngFor="let petItem of pets; let i = index" type="button" [class.ativo]="i === indice" (click)="indice = i" [attr.aria-label]="'Ir para ' + petItem.nome"></button>
+  </div>
+</div>

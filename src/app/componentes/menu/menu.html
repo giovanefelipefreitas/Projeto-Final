@@ -1,0 +1,28 @@
+<header class="topo">
+  <div class="container barra">
+    <a class="marca" routerLink="/home" (click)="fechar()">
+      <span class="pata">🐾</span>
+      <span>AdotaSSA</span>
+    </a>
+
+    <button class="menu-mobile" type="button" (click)="alternar()" aria-label="Abrir menu">☰</button>
+
+    <nav [class.aberto]="aberto">
+      <a routerLink="/home" routerLinkActive="ativo" (click)="fechar()">Início</a>
+      <a routerLink="/adocao" routerLinkActive="ativo" (click)="fechar()">Adoção</a>
+      <a routerLink="/comunidade" routerLinkActive="ativo" (click)="fechar()">Comunidade</a>
+      <a routerLink="/privacidade" routerLinkActive="ativo" (click)="fechar()">LGPD</a>
+
+      <ng-container *ngIf="auth.estaAutenticado(); else visitante">
+        <a routerLink="/publicar" routerLinkActive="ativo" (click)="fechar()">Publicar</a>
+        <a routerLink="/perfil" routerLinkActive="ativo" (click)="fechar()">Perfil</a>
+        <button class="sair" type="button" (click)="logout()">Sair</button>
+      </ng-container>
+
+      <ng-template #visitante>
+        <a routerLink="/login" routerLinkActive="ativo" (click)="fechar()">Entrar</a>
+        <a class="cadastro" routerLink="/cadastro" (click)="fechar()">Criar conta</a>
+      </ng-template>
+    </nav>
+  </div>
+</header>

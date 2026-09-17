@@ -1,0 +1,91 @@
+.topo {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid var(--borda);
+  backdrop-filter: blur(10px);
+}
+
+.barra {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--azul-escuro);
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.pata { font-size: 1.5rem; }
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--texto);
+  font-weight: 700;
+  font-size: 0.94rem;
+}
+
+nav a:hover,
+nav a.ativo {
+  color: var(--azul);
+}
+
+.cadastro {
+  padding: 9px 13px;
+  border-radius: 10px;
+  background: var(--laranja);
+}
+
+.sair {
+  border: 0;
+  background: transparent;
+  color: #b42318;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.menu-mobile {
+  display: none;
+  border: 0;
+  background: transparent;
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+@media (max-width: 850px) {
+  .menu-mobile { display: block; }
+
+  nav {
+    display: none;
+    position: absolute;
+    top: 72px;
+    left: 16px;
+    right: 16px;
+    padding: 18px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    background: white;
+    border: 1px solid var(--borda);
+    border-radius: 14px;
+    box-shadow: var(--sombra);
+  }
+
+  nav.aberto { display: flex; }
+  nav a, .sair { padding: 9px 4px; text-align: left; }
+}

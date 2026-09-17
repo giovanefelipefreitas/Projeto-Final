@@ -1,0 +1,47 @@
+<app-menu></app-menu>
+
+<main>
+  <section class="cabecalho">
+    <div class="container">
+      <span>Adoção responsável</span>
+      <h1>Talvez seu novo melhor amigo esteja aqui.</h1>
+      <p>Use os filtros para conhecer os animais divulgados pela comunidade.</p>
+    </div>
+  </section>
+
+  <section class="container conteudo">
+    <div class="filtros">
+      <div class="campo">
+        <label for="busca">Pesquisar</label>
+        <input id="busca" [(ngModel)]="busca" placeholder="Nome ou bairro">
+      </div>
+      <div class="campo">
+        <label for="especie">Espécie</label>
+        <select id="especie" [(ngModel)]="especie">
+          <option value="">Todas</option>
+          <option value="Cachorro">Cachorro</option>
+          <option value="Gato">Gato</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label for="bairro">Bairro</label>
+        <select id="bairro" [(ngModel)]="bairro">
+          <option value="">Todos</option>
+          <option *ngFor="let item of bairros" [value]="item">{{ item }}</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="resultado">{{ filtrados.length }} animal(is) encontrado(s)</p>
+
+    <div class="grade" *ngIf="filtrados.length; else semResultados">
+      <app-pet-card *ngFor="let pet of filtrados" [pet]="pet"></app-pet-card>
+    </div>
+
+    <ng-template #semResultados>
+      <div class="vazio">Nenhum animal corresponde aos filtros escolhidos.</div>
+    </ng-template>
+  </section>
+</main>
+
+<app-footer></app-footer>

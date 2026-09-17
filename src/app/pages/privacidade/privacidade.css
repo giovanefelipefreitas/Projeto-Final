@@ -1,0 +1,8 @@
+.privacidade { max-width: 850px; padding: 65px 0 10px; }
+header { padding-bottom: 28px; border-bottom: 1px solid var(--borda); }
+header span { color: var(--laranja-escuro); font-weight: 800; }
+header h1 { margin: 8px 0 12px; color: var(--azul-escuro); font-size: clamp(2.3rem, 4vw, 3.8rem); }
+header p { color: var(--texto-suave); line-height: 1.65; }
+section { padding-top: 30px; }
+section h2 { margin: 28px 0 8px; color: var(--azul-escuro); font-size: 1.25rem; }
+section p { color: var(--texto-suave); line-height: 1.75; }

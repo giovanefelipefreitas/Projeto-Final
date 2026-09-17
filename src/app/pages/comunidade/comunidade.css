@@ -1,0 +1,25 @@
+.comunidade { padding: 60px 0 10px; }
+.intro { display: flex; justify-content: space-between; gap: 35px; align-items: end; margin-bottom: 40px; }
+.intro > div { max-width: 760px; }
+.intro span { color: var(--laranja-escuro); font-weight: 800; text-transform: uppercase; font-size: .8rem; }
+.intro h1 { margin: 9px 0 14px; color: var(--azul-escuro); font-size: clamp(2.2rem, 4vw, 3.6rem); line-height: 1.08; }
+.intro p { color: var(--texto-suave); line-height: 1.7; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px; align-items: start; }
+.feed { display: grid; gap: 18px; }
+.post { padding: 24px; border-radius: 18px; background: white; border: 1px solid var(--borda); box-shadow: 0 8px 20px rgba(31,62,87,.06); }
+.post header { display: flex; justify-content: space-between; gap: 16px; }
+.post header div { display: flex; flex-direction: column; gap: 4px; }
+.post header small { color: var(--texto-suave); }
+.post header > span { align-self: flex-start; padding: 6px 9px; border-radius: 999px; background: var(--azul-claro); color: var(--azul); font-weight: 700; font-size: .78rem; }
+.texto { margin: 18px 0; line-height: 1.65; }
+.acoes-post { display: flex; gap: 20px; padding-top: 13px; border-top: 1px solid var(--borda); color: var(--texto-suave); font-size: .9rem; }
+.acoes-post button { border: 0; background: transparent; cursor: pointer; color: var(--texto-suave); }
+.comentarios { margin-top: 15px; display: grid; gap: 7px; }
+.comentarios p { padding: 9px 11px; border-radius: 10px; background: #f6f8fa; font-size: .9rem; }
+.novo-comentario { margin-top: 13px; display: flex; gap: 8px; }
+.novo-comentario input { flex: 1; min-width: 0; border: 1px solid var(--borda); border-radius: 10px; padding: 10px; }
+.novo-comentario button { border: 0; border-radius: 10px; padding: 0 14px; background: var(--azul); color: white; font-weight: 700; cursor: pointer; }
+aside { position: sticky; top: 95px; padding: 22px; border-radius: 18px; background: var(--azul-escuro); color: white; }
+aside p { margin: 12px 0 18px; color: #d7e5f1; line-height: 1.6; }
+.dica { padding: 12px; border-radius: 12px; background: rgba(255,255,255,.09); line-height: 1.5; }
+@media (max-width: 850px) { .intro { flex-direction: column; align-items: flex-start; } .layout { grid-template-columns: 1fr; } aside { position: static; } }

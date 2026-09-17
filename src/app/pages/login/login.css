@@ -1,0 +1,13 @@
+.pagina-auth { min-height: calc(100vh - 72px); display: grid; grid-template-columns: 1fr 1fr; background: #f7fafc; }
+.painel-info { padding: 8vw; display: flex; flex-direction: column; justify-content: center; background: linear-gradient(135deg, var(--azul-escuro), var(--azul)); color: white; }
+.painel-info span { font-weight: 800; color: #ffd59f; }
+.painel-info h1 { max-width: 560px; margin: 15px 0; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.05; }
+.painel-info p { max-width: 600px; color: #dbe9f4; line-height: 1.7; }
+.formulario-card { width: min(470px, calc(100% - 32px)); margin: auto; padding: 38px; border-radius: 22px; background: white; box-shadow: var(--sombra); }
+.etiqueta { color: var(--laranja-escuro); font-weight: 800; text-transform: uppercase; font-size: .78rem; }
+.formulario-card h2 { margin-top: 8px; color: var(--azul-escuro); font-size: 2rem; }
+.subtitulo { margin: 8px 0 24px; color: var(--texto-suave); }
+form { display: grid; gap: 17px; }
+.rodape-form { margin-top: 20px; text-align: center; color: var(--texto-suave); }
+.rodape-form a { color: var(--azul); font-weight: 800; }
+@media (max-width: 800px) { .pagina-auth { grid-template-columns: 1fr; } .painel-info { padding: 50px 24px; } .formulario-card { margin: 40px auto; } }

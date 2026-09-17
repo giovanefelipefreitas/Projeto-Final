@@ -1,0 +1,33 @@
+<app-menu></app-menu>
+
+<main class="pagina-auth">
+  <section class="painel-info">
+    <span>🐾 AdotaSSA</span>
+    <h1>Que bom ter você por aqui.</h1>
+    <p>Entre para publicar animais, divulgar ações e fortalecer a rede de proteção animal de Salvador.</p>
+  </section>
+
+  <section class="formulario-card">
+    <span class="etiqueta">Acessar conta</span>
+    <h2>Entrar</h2>
+    <p class="subtitulo">Use o e-mail e a senha cadastrados.</p>
+
+    <form (ngSubmit)="entrar()">
+      <div class="campo">
+        <label for="email">E-mail</label>
+        <input id="email" type="email" name="email" [(ngModel)]="email" autocomplete="email" placeholder="seuemail@exemplo.com">
+      </div>
+
+      <div class="campo">
+        <label for="senha">Senha</label>
+        <input id="senha" type="password" name="senha" [(ngModel)]="senha" autocomplete="current-password" placeholder="Sua senha">
+      </div>
+
+      <p class="mensagem-erro" *ngIf="mensagemErro">{{ mensagemErro }}</p>
+
+      <button class="botao" type="submit">Entrar</button>
+    </form>
+
+    <p class="rodape-form">Ainda não tem conta? <a routerLink="/cadastro">Cadastre-se</a></p>
+  </section>
+</main>
