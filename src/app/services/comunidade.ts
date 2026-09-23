@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Post } from '../models/post.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class ComunidadeService {
+
   private readonly chave = 'adotassa_posts';
 
   private readonly iniciais: Post[] = [
@@ -13,8 +16,11 @@ export class ComunidadeService {
       texto: 'Feira de adoção neste sábado, das 10h às 16h. Venha conhecer animais que estão esperando por uma família.',
       curtidas: 42,
       data: 'Hoje',
-      comentarios: ['Vou compartilhar com meus amigos!']
+      comentarios: [
+        'Vou compartilhar com meus amigos!'
+      ]
     },
+
     {
       id: 102,
       autor: 'Rede Animal Salvador',
@@ -24,6 +30,7 @@ export class ComunidadeService {
       data: 'Ontem',
       comentarios: []
     },
+
     {
       id: 103,
       autor: 'AdotaSSA',
@@ -31,54 +38,127 @@ export class ComunidadeService {
       texto: 'Antes de adotar, converse com todos que moram na casa e avalie tempo, espaço e custos. Adoção responsável é compromisso.',
       curtidas: 58,
       data: '2 dias atrás',
-      comentarios: ['Informação muito importante.']
+      comentarios: [
+        'Informação muito importante.'
+      ]
     }
   ];
 
-  listar(): Post[] {
-    const valor = localStorage.getItem(this.chave);
-    if (valor) return JSON.parse(valor) as Post[];
 
-    localStorage.setItem(this.chave, JSON.stringify(this.iniciais));
+  listar(): Post[] {
+
+    const valor = localStorage.getItem(this.chave);
+
+    if (valor) {
+      return JSON.parse(valor) as Post[];
+    }
+
+    localStorage.setItem(
+      this.chave,
+      JSON.stringify(this.iniciais)
+    );
+
     return [...this.iniciais];
   }
 
-  adicionar(autor: string, categoria: Post['categoria'], texto: string): void {
+
+  adicionar(
+    usuarioId: number,
+    autor: string,
+    categoria: Post['categoria'],
+    texto: string
+  ): void {
+
     const posts = this.listar();
+
     posts.unshift({
       id: Date.now(),
-      autor,
-      categoria,
+      usuarioId: usuarioId,
+      autor: autor,
+      categoria: categoria,
       texto: texto.trim(),
       curtidas: 0,
       data: 'Agora',
       comentarios: []
     });
+
     this.salvar(posts);
   }
 
+
+  listarDoUsuario(usuarioId: number): Post[] {
+
+    return this.listar().filter(
+      post => post.usuarioId === usuarioId
+    );
+  }
+
+
+  excluirDoUsuario(
+    id: number,
+    usuarioId: number
+  ): void {
+
+    const posts = this.listar();
+
+    const novosPosts = posts.filter(
+      post =>
+        post.id !== id ||
+        post.usuarioId !== usuarioId
+    );
+
+    this.salvar(novosPosts);
+  }
+
+
   curtir(id: number): void {
+
     const posts = this.listar();
-    const post = posts.find(p => p.id === id);
+
+    const post = posts.find(
+      p => p.id === id
+    );
+
     if (post) {
+
       post.curtidas += 1;
+
       this.salvar(posts);
     }
   }
 
-  comentar(id: number, comentario: string): void {
+
+  comentar(
+    id: number,
+    comentario: string
+  ): void {
+
     const texto = comentario.trim();
-    if (!texto) return;
+
+    if (!texto) {
+      return;
+    }
 
     const posts = this.listar();
-    const post = posts.find(p => p.id === id);
+
+    const post = posts.find(
+      p => p.id === id
+    );
+
     if (post) {
+
       post.comentarios.push(texto);
+
       this.salvar(posts);
     }
   }
+
 
   private salvar(posts: Post[]): void {
-    localStorage.setItem(this.chave, JSON.stringify(posts));
+
+    localStorage.setItem(
+      this.chave,
+      JSON.stringify(posts)
+    );
   }
 }

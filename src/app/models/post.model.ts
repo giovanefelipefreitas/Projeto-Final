@@ -6,4 +6,6 @@ export interface Post {
   curtidas: number;
   data: string;
   comentarios: string[];
+
+  usuarioId?: number;
 }

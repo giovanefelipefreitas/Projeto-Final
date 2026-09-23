@@ -1,6 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
-<rect width="800" height="500" rx="32" fill="#eef8ef"/>
-<circle cx="400" cy="235" r="155" fill="#ffffff"/>
-<text x="400" y="285" text-anchor="middle" font-size="180" font-family="Arial, sans-serif">🐶</text>
-<text x="400" y="445" text-anchor="middle" font-size="36" font-weight="700" fill="#2f6a40" font-family="Arial, sans-serif">Mel</text>
+  <rect width="800" height="500" rx="32" fill="#eaf4ff"></rect>
+  <circle cx="400" cy="250" r="155" fill="#ffffff"></circle>
+  <text x="400" y="300" text-anchor="middle" font-size="180" font-family="Arial, sans-serif">
+    🐶
+  </text>
 </svg>

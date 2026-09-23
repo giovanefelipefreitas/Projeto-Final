@@ -9,4 +9,6 @@ export interface Pet {
   descricao: string;
   imagem: string;
   compatibilidade: string[];
+
+  usuarioId?: number;
 }

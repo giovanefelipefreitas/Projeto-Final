@@ -11,13 +11,25 @@ import { Post } from '../../models/post.model';
 @Component({
   selector: 'app-publicar',
   standalone: true,
-  imports: [CommonModule, FormsModule, Menu, Footer],
+  imports: [
+    CommonModule,
+    FormsModule,
+    Menu,
+    Footer
+  ],
   templateUrl: './publicar.html',
   styleUrl: './publicar.css'
 })
 export class Publicar {
+
   tipo: 'pet' | 'post' = 'pet';
+
   mensagem = '';
+
+  imagemSelecionada = '';
+
+  nomeArquivo = '';
+
 
   pet = {
     nome: '',
@@ -29,10 +41,12 @@ export class Publicar {
     descricao: ''
   };
 
+
   post = {
     categoria: 'Informação' as Post['categoria'],
     texto: ''
   };
+
 
   constructor(
     private petService: PetService,
@@ -40,35 +54,199 @@ export class Publicar {
     private auth: Auth
   ) {}
 
-  publicarPet(): void {
+
+  selecionarImagem(event: Event): void {
+
     this.mensagem = '';
-    if (!this.pet.nome.trim() || !this.pet.idade.trim() || !this.pet.bairro.trim() || !this.pet.descricao.trim()) {
-      this.mensagem = 'Preencha todos os campos do animal.';
+
+    const input =
+      event.target as HTMLInputElement;
+
+    const arquivo = input.files?.[0];
+
+    if (!arquivo) {
       return;
     }
 
-    const imagem = this.pet.especie === 'Gato' ? 'img/luna.svg' : 'img/caramelo.svg';
 
-    this.petService.adicionar({
-      ...this.pet,
-      imagem,
-      compatibilidade: ['Adoção responsável', 'Contato com responsável']
-    });
+    if (!arquivo.type.startsWith('image/')) {
 
-    this.mensagem = 'Animal publicado com sucesso.';
-    this.pet = { nome: '', especie: 'Cachorro', idade: '', porte: 'Médio', sexo: 'Macho', bairro: '', descricao: '' };
+      this.mensagem =
+        'Selecione um arquivo de imagem.';
+
+      input.value = '';
+
+      return;
+    }
+
+
+    if (arquivo.size > 1500000) {
+
+      this.mensagem =
+        'A imagem deve ter no máximo 1,5 MB.';
+
+      input.value = '';
+
+      return;
+    }
+
+
+    const leitor = new FileReader();
+
+
+    leitor.onload = () => {
+
+      this.imagemSelecionada =
+        leitor.result as string;
+
+      this.nomeArquivo =
+        arquivo.name;
+    };
+
+
+    leitor.onerror = () => {
+
+      this.mensagem =
+        'Não foi possível carregar a imagem.';
+    };
+
+
+    leitor.readAsDataURL(arquivo);
   }
 
-  publicarPost(): void {
+
+  removerImagem(): void {
+
+    this.imagemSelecionada = '';
+
+    this.nomeArquivo = '';
+  }
+
+
+  publicarPet(): void {
+
     this.mensagem = '';
-    if (!this.post.texto.trim()) {
-      this.mensagem = 'Escreva o conteúdo da publicação.';
+
+    const usuario =
+      this.auth.usuarioAtual();
+
+
+    if (!usuario) {
+
+      this.mensagem =
+        'Você precisa estar logado para publicar.';
+
       return;
     }
 
-    const autor = this.auth.usuarioAtual()?.nome || 'Usuário AdotaSSA';
-    this.comunidadeService.adicionar(autor, this.post.categoria, this.post.texto);
+
+    if (
+      !this.pet.nome.trim() ||
+      !this.pet.idade.trim() ||
+      !this.pet.bairro.trim() ||
+      !this.pet.descricao.trim()
+    ) {
+
+      this.mensagem =
+        'Preencha todos os campos do animal.';
+
+      return;
+    }
+
+
+    let imagem =
+      this.imagemSelecionada;
+
+
+    if (!imagem) {
+
+      imagem =
+        this.pet.especie === 'Gato'
+          ? 'img/luna.svg'
+          : 'img/caramelo.svg';
+    }
+
+
+    this.petService.adicionar({
+
+      ...this.pet,
+
+      imagem: imagem,
+
+      usuarioId: usuario.id,
+
+      compatibilidade: [
+        'Adoção responsável',
+        'Contato com responsável'
+      ]
+
+    });
+
+
+    this.mensagem =
+      'Animal publicado com sucesso.';
+
+
+    this.pet = {
+      nome: '',
+      especie: 'Cachorro',
+      idade: '',
+      porte: 'Médio',
+      sexo: 'Macho',
+      bairro: '',
+      descricao: ''
+    };
+
+
+    this.imagemSelecionada = '';
+
+    this.nomeArquivo = '';
+  }
+
+
+  publicarPost(): void {
+
+    this.mensagem = '';
+
+    const usuario =
+      this.auth.usuarioAtual();
+
+
+    if (!usuario) {
+
+      this.mensagem =
+        'Você precisa estar logado para publicar.';
+
+      return;
+    }
+
+
+    if (!this.post.texto.trim()) {
+
+      this.mensagem =
+        'Escreva o conteúdo da publicação.';
+
+      return;
+    }
+
+
+    this.comunidadeService.adicionar(
+
+      usuario.id,
+
+      usuario.nome,
+
+      this.post.categoria,
+
+      this.post.texto
+
+    );
+
+
     this.post.texto = '';
-    this.mensagem = 'Publicação criada com sucesso.';
+
+
+    this.mensagem =
+      'Publicação criada com sucesso.';
   }
 }

@@ -1,22 +1,343 @@
 <app-menu></app-menu>
 
 <main class="container perfil">
-  <section class="cartao">
-    <div class="avatar">{{ usuario?.nome?.charAt(0)?.toUpperCase() || 'U' }}</div>
-    <span>Meu perfil</span>
-    <h1>{{ usuario?.nome }}</h1>
-    <p>{{ usuario?.email }}</p>
 
-    <div class="info-lgpd">
-      <h3>Seus dados neste protótipo</h3>
-      <p>O cadastro fica armazenado somente no navegador por meio do localStorage. A sessão usa sessionStorage.</p>
-    </div>
+    <!-- PERFIL DO USUÁRIO -->
 
-    <div class="acoes">
-      <button class="botao secundario" type="button" (click)="logout()">Encerrar sessão</button>
-      <button class="excluir" type="button" (click)="excluirConta()">Excluir minha conta</button>
-    </div>
-  </section>
+    <section class="cartao-perfil">
+
+        <div class="avatar">
+
+            {{
+                usuario?.nome?.charAt(0)?.toUpperCase()
+                || 'U'
+            }}
+
+        </div>
+
+        <span>Meu perfil</span>
+
+        <h1>
+            {{ usuario?.nome }}
+        </h1>
+
+        <p>
+            {{ usuario?.email }}
+        </p>
+
+        <div class="info-lgpd">
+
+            <h3>
+                Seus dados neste protótipo
+            </h3>
+
+            <p>
+                O cadastro fica armazenado somente
+                no navegador por meio do localStorage.
+                A sessão utiliza sessionStorage.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ALTERAR SENHA -->
+
+    <section class="alterar-senha">
+
+        <div class="titulo-secao">
+
+            <span>Segurança</span>
+
+            <h2>
+                Alterar senha
+            </h2>
+
+            <p>
+                Para criar uma nova senha,
+                confirme primeiro sua senha atual.
+            </p>
+
+        </div>
+
+        <form
+            class="form-senha"
+            (ngSubmit)="alterarSenha()"
+        >
+
+            <div class="campo-senha">
+
+                <label for="senhaAtual">
+                    Senha atual
+                </label>
+
+                <input
+                    id="senhaAtual"
+                    name="senhaAtual"
+                    type="password"
+                    [(ngModel)]="senhaAtual"
+                    placeholder="Digite sua senha atual"
+                >
+
+            </div>
+
+
+            <div class="campo-senha">
+
+                <label for="novaSenha">
+                    Nova senha
+                </label>
+
+                <input
+                    id="novaSenha"
+                    name="novaSenha"
+                    type="password"
+                    [(ngModel)]="novaSenha"
+                    placeholder="Mínimo de 6 caracteres"
+                >
+
+            </div>
+
+
+            <div class="campo-senha">
+
+                <label for="confirmarNovaSenha">
+                    Confirmar nova senha
+                </label>
+
+                <input
+                    id="confirmarNovaSenha"
+                    name="confirmarNovaSenha"
+                    type="password"
+                    [(ngModel)]="confirmarNovaSenha"
+                    placeholder="Digite novamente"
+                >
+
+            </div>
+
+
+            <p
+                *ngIf="mensagemSenha"
+                class="mensagem-senha"
+                [class.sucesso]="senhaAlterada"
+            >
+                {{ mensagemSenha }}
+            </p>
+
+
+            <button
+                type="submit"
+                class="botao-alterar-senha"
+            >
+                Alterar senha
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- ANIMAIS PUBLICADOS -->
+
+    <section class="minhas-publicacoes">
+
+        <div class="titulo-secao">
+
+            <span>Minhas publicações</span>
+
+            <h2>
+                Animais para adoção
+            </h2>
+
+        </div>
+
+
+        <div
+            class="sem-publicacoes"
+            *ngIf="petsPublicados.length === 0"
+        >
+
+            Você ainda não publicou nenhum animal.
+
+        </div>
+
+
+        <div class="grid-publicacoes">
+
+            <article
+                class="card-pet"
+                *ngFor="let pet of petsPublicados"
+            >
+
+                <img
+                    [src]="pet.imagem"
+                    [alt]="pet.nome"
+                >
+
+                <div class="conteudo">
+
+                    <span class="tipo">
+                        {{ pet.especie }}
+                    </span>
+
+                    <h3>
+                        {{ pet.nome }}
+                    </h3>
+
+                    <p class="localizacao">
+                        📍 {{ pet.bairro }}
+                    </p>
+
+                    <p>
+                        {{ pet.idade }}
+                        •
+                        {{ pet.porte }}
+                        •
+                        {{ pet.sexo }}
+                    </p>
+
+                    <p class="descricao">
+                        {{ pet.descricao }}
+                    </p>
+
+                    <button
+                        class="botao-excluir"
+                        type="button"
+                        (click)="excluirPet(pet.id)"
+                    >
+                        🗑 Excluir publicação
+                    </button>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- POSTS DA COMUNIDADE -->
+
+    <section class="minhas-publicacoes">
+
+        <div class="titulo-secao">
+
+            <span>Comunidade</span>
+
+            <h2>
+                Minhas publicações na comunidade
+            </h2>
+
+        </div>
+
+
+        <div
+            class="sem-publicacoes"
+            *ngIf="postsPublicados.length === 0"
+        >
+
+            Você ainda não publicou nada na comunidade.
+
+        </div>
+
+
+        <div class="lista-posts">
+
+            <article
+                class="card-post"
+                *ngFor="let post of postsPublicados"
+            >
+
+                <div class="topo-post">
+
+                    <span class="categoria">
+                        {{ post.categoria }}
+                    </span>
+
+                    <span class="data">
+                        {{ post.data }}
+                    </span>
+
+                </div>
+
+
+                <h3>
+                    {{ post.autor }}
+                </h3>
+
+
+                <p>
+                    {{ post.texto }}
+                </p>
+
+
+                <div class="estatisticas">
+
+                    <span>
+                        ❤️ {{ post.curtidas }}
+                    </span>
+
+                    <span>
+                        💬 {{ post.comentarios.length }}
+                    </span>
+
+                </div>
+
+
+                <button
+                    class="botao-excluir"
+                    type="button"
+                    (click)="excluirPost(post.id)"
+                >
+                    🗑 Excluir publicação
+                </button>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- CONTA -->
+
+    <section class="acoes-conta">
+
+        <h2>
+            Conta
+        </h2>
+
+        <p>
+            Você pode encerrar sua sessão
+            ou excluir seus dados deste protótipo.
+        </p>
+
+
+        <div class="acoes">
+
+            <button
+                class="botao secundario"
+                type="button"
+                (click)="logout()"
+            >
+                Encerrar sessão
+            </button>
+
+
+            <button
+                class="excluir"
+                type="button"
+                (click)="excluirConta()"
+            >
+                Excluir minha conta
+            </button>
+
+        </div>
+
+    </section>
+
 </main>
 
 <app-footer></app-footer>
