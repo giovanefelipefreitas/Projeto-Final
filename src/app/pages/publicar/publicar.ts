@@ -1,20 +1,38 @@
-import { CommonModule } from '@angular/common';
+import {
+  CommonModule
+} from '@angular/common';
 
-import { Component } from '@angular/core';
+import {
+  Component
+} from '@angular/core';
 
-import { FormsModule } from '@angular/forms';
+import {
+  FormsModule
+} from '@angular/forms';
 
-import { Menu } from '../../componentes/menu/menu';
+import {
+  Menu
+} from '../../componentes/menu/menu';
 
-import { Footer } from '../../componentes/footer/footer';
+import {
+  Footer
+} from '../../componentes/footer/footer';
 
-import { PetService } from '../../services/pet';
+import {
+  PetService
+} from '../../services/pet';
 
-import { ComunidadeService } from '../../services/comunidade';
+import {
+  ComunidadeService
+} from '../../services/comunidade';
 
-import { Auth } from '../../services/auth';
+import {
+  Auth
+} from '../../services/auth';
 
-import { Post } from '../../models/post.model';
+import {
+  Post
+} from '../../models/post.model';
 
 
 @Component({
@@ -28,29 +46,60 @@ import { Post } from '../../models/post.model';
     Footer
   ],
 
-  templateUrl: './publicar.html',
-  styleUrl: './publicar.css'
+  templateUrl:
+    './publicar.html',
+
+  styleUrl:
+    './publicar.css'
 })
 export class Publicar {
 
-  tipo: 'pet' | 'post' = 'pet';
+  tipo:
+    'pet' |
+    'post' =
+      'pet';
 
-  mensagem = '';
 
-  imagemSelecionada = '';
+  mensagem =
+    '';
 
-  nomeArquivo = '';
+
+  /*
+    FOTO DO ANIMAL
+  */
+
+  imagemSelecionada =
+    '';
+
+
+  nomeArquivo =
+    '';
+
+
+  /*
+    IMAGEM DO POST
+  */
+
+  imagemPostSelecionada =
+    '';
+
+
+  nomeArquivoPost =
+    '';
 
 
   pet = {
 
-    nome: '',
+    nome:
+      '',
 
     especie:
       'Cachorro' as
-      'Cachorro' | 'Gato',
+      'Cachorro' |
+      'Gato',
 
-    idade: '',
+    idade:
+      '',
 
     porte:
       'Médio' as
@@ -63,9 +112,11 @@ export class Publicar {
       'Macho' |
       'Fêmea',
 
-    bairro: '',
+    bairro:
+      '',
 
-    descricao: ''
+    descricao:
+      ''
 
   };
 
@@ -76,7 +127,8 @@ export class Publicar {
       'Informação' as
       Post['categoria'],
 
-    texto: ''
+    texto:
+      ''
 
   };
 
@@ -95,11 +147,16 @@ export class Publicar {
   ) {}
 
 
+  /*
+    FOTO DO ANIMAL
+  */
+
   selecionarImagem(
     event: Event
   ): void {
 
-    this.mensagem = '';
+    this.mensagem =
+      '';
 
 
     const input =
@@ -112,19 +169,25 @@ export class Publicar {
 
 
     if (!arquivo) {
+
       return;
     }
 
 
     if (
       !arquivo.type
-        .startsWith('image/')
+        .startsWith(
+          'image/'
+        )
     ) {
 
       this.mensagem =
         'Selecione um arquivo de imagem.';
 
-      input.value = '';
+
+      input.value =
+        '';
+
 
       return;
     }
@@ -136,9 +199,12 @@ export class Publicar {
     ) {
 
       this.mensagem =
-        'A imagem deve ter no máximo 1,5 MB.';
+        'A imagem do animal deve ter no máximo 1,5 MB.';
 
-      input.value = '';
+
+      input.value =
+        '';
+
 
       return;
     }
@@ -148,23 +214,26 @@ export class Publicar {
       new FileReader();
 
 
-    leitor.onload = () => {
+    leitor.onload =
+      () => {
 
-      this.imagemSelecionada =
-        leitor.result as string;
-
-      this.nomeArquivo =
-        arquivo.name;
-
-    };
+        this.imagemSelecionada =
+          leitor.result as string;
 
 
-    leitor.onerror = () => {
+        this.nomeArquivo =
+          arquivo.name;
 
-      this.mensagem =
-        'Não foi possível carregar a imagem.';
+      };
 
-    };
+
+    leitor.onerror =
+      () => {
+
+        this.mensagem =
+          'Não foi possível carregar a imagem.';
+
+      };
 
 
     leitor.readAsDataURL(
@@ -175,19 +244,140 @@ export class Publicar {
 
   removerImagem(): void {
 
-    this.imagemSelecionada = '';
+    this.imagemSelecionada =
+      '';
 
-    this.nomeArquivo = '';
+
+    this.nomeArquivo =
+      '';
   }
 
 
+  /*
+    IMAGEM DO POST
+  */
+
+  selecionarImagemPost(
+    event: Event
+  ): void {
+
+    this.mensagem =
+      '';
+
+
+    const input =
+      event.target as
+      HTMLInputElement;
+
+
+    const arquivo =
+      input.files?.[0];
+
+
+    if (!arquivo) {
+
+      return;
+    }
+
+
+    if (
+      !arquivo.type
+        .startsWith(
+          'image/'
+        )
+    ) {
+
+      this.mensagem =
+        'Selecione um arquivo de imagem.';
+
+
+      input.value =
+        '';
+
+
+      return;
+    }
+
+
+    /*
+      Como usamos localStorage,
+      deixamos a imagem do post
+      limitada a 1 MB.
+    */
+
+    if (
+      arquivo.size >
+      1000000
+    ) {
+
+      this.mensagem =
+        'A imagem do post deve ter no máximo 1 MB.';
+
+
+      input.value =
+        '';
+
+
+      return;
+    }
+
+
+    const leitor =
+      new FileReader();
+
+
+    leitor.onload =
+      () => {
+
+        this.imagemPostSelecionada =
+          leitor.result as string;
+
+
+        this.nomeArquivoPost =
+          arquivo.name;
+
+      };
+
+
+    leitor.onerror =
+      () => {
+
+        this.mensagem =
+          'Não foi possível carregar a imagem do post.';
+
+      };
+
+
+    leitor.readAsDataURL(
+      arquivo
+    );
+  }
+
+
+  removerImagemPost(): void {
+
+    this.imagemPostSelecionada =
+      '';
+
+
+    this.nomeArquivoPost =
+      '';
+  }
+
+
+  /*
+    PUBLICAR ANIMAL
+  */
+
   publicarPet(): void {
 
-    this.mensagem = '';
+    this.mensagem =
+      '';
 
 
     const usuario =
-      this.auth.usuarioAtual();
+      this.auth
+        .usuarioAtual();
 
 
     if (!usuario) {
@@ -195,19 +385,32 @@ export class Publicar {
       this.mensagem =
         'Você precisa estar logado para publicar.';
 
+
       return;
     }
 
 
     if (
-      !this.pet.nome.trim() ||
-      !this.pet.idade.trim() ||
-      !this.pet.bairro.trim() ||
+
+      !this.pet.nome.trim()
+
+      ||
+
+      !this.pet.idade.trim()
+
+      ||
+
+      !this.pet.bairro.trim()
+
+      ||
+
       !this.pet.descricao.trim()
+
     ) {
 
       this.mensagem =
         'Preencha todos os campos do animal.';
+
 
       return;
     }
@@ -220,8 +423,9 @@ export class Publicar {
     if (!imagem) {
 
       imagem =
+
         this.pet.especie ===
-          'Gato'
+        'Gato'
 
           ? 'img/luna.svg'
 
@@ -230,31 +434,35 @@ export class Publicar {
     }
 
 
-    this.petService.adicionar({
+    this.petService
+      .adicionar({
 
-      ...this.pet,
+        ...this.pet,
 
-      imagem:
-        imagem,
+        imagem:
+          imagem,
 
-      usuarioId:
-        usuario.id,
+        usuarioId:
+          usuario.id,
 
-      usuarioNome:
-        usuario.nome,
+        usuarioNome:
+          usuario.nome,
 
-      status:
-        'Disponível',
+        status:
+          'Disponível',
 
-      compatibilidade: [
+        demonstrativo:
+          false,
 
-        'Adoção responsável',
+        compatibilidade: [
 
-        'Contato com responsável'
+          'Adoção responsável',
 
-      ]
+          'Contato com responsável'
 
-    });
+        ]
+
+      });
 
 
     this.mensagem =
@@ -263,42 +471,59 @@ export class Publicar {
 
     this.pet = {
 
-      nome: '',
+      nome:
+        '',
 
-      especie: 'Cachorro',
+      especie:
+        'Cachorro',
 
-      idade: '',
+      idade:
+        '',
 
-      porte: 'Médio',
+      porte:
+        'Médio',
 
-      sexo: 'Macho',
+      sexo:
+        'Macho',
 
-      bairro: '',
+      bairro:
+        '',
 
-      descricao: ''
+      descricao:
+        ''
 
     };
 
 
-    this.imagemSelecionada = '';
+    this.imagemSelecionada =
+      '';
 
-    this.nomeArquivo = '';
+
+    this.nomeArquivo =
+      '';
   }
 
 
+  /*
+    PUBLICAR POST
+  */
+
   publicarPost(): void {
 
-    this.mensagem = '';
+    this.mensagem =
+      '';
 
 
     const usuario =
-      this.auth.usuarioAtual();
+      this.auth
+        .usuarioAtual();
 
 
     if (!usuario) {
 
       this.mensagem =
         'Você precisa estar logado para publicar.';
+
 
       return;
     }
@@ -311,27 +536,56 @@ export class Publicar {
       this.mensagem =
         'Escreva o conteúdo da publicação.';
 
+
       return;
     }
 
 
-    this.comunidadeService.adicionar(
+    try {
 
-      usuario.id,
+      this.comunidadeService
+        .adicionar(
 
-      usuario.nome,
+          usuario.id,
 
-      this.post.categoria,
+          usuario.nome,
 
-      this.post.texto
+          this.post.categoria,
 
-    );
+          this.post.texto,
+
+          this.imagemPostSelecionada
+
+        );
 
 
-    this.post.texto = '';
+      this.post = {
+
+        categoria:
+          'Informação',
+
+        texto:
+          ''
+
+      };
 
 
-    this.mensagem =
-      'Publicação criada com sucesso.';
+      this.imagemPostSelecionada =
+        '';
+
+
+      this.nomeArquivoPost =
+        '';
+
+
+      this.mensagem =
+        'Publicação criada com sucesso.';
+
+    } catch {
+
+      this.mensagem =
+        'Não foi possível salvar a publicação. Tente usar uma imagem menor.';
+
+    }
   }
 }

@@ -1,296 +1,591 @@
 <app-menu></app-menu>
 
+
 <main class="container publicar">
 
-  <header>
 
-    <span>Área protegida</span>
-
-    <h1>O que você deseja publicar?</h1>
-
-    <p>
-      Escolha entre divulgar um animal para adoção
-      ou criar uma publicação para a comunidade.
-    </p>
-
-  </header>
-
-
-  <div class="abas">
-
-    <button
-      type="button"
-      [class.ativo]="tipo === 'pet'"
-      (click)="tipo = 'pet'"
-    >
-      🐾 Animal para adoção
-    </button>
-
-    <button
-      type="button"
-      [class.ativo]="tipo === 'post'"
-      (click)="tipo = 'post'"
-    >
-      💬 Post da comunidade
-    </button>
-
-  </div>
-
-
-  <section
-    class="card-form"
-    *ngIf="tipo === 'pet'"
-  >
-
-    <form (ngSubmit)="publicarPet()">
-
-      <div class="grade-form">
-
-
-        <div class="campo">
-
-          <label>Nome</label>
-
-          <input
-            name="petNome"
-            [(ngModel)]="pet.nome"
-          >
-
-        </div>
-
-
-        <div class="campo">
-
-          <label>Espécie</label>
-
-          <select
-            name="petEspecie"
-            [(ngModel)]="pet.especie"
-          >
-
-            <option>Cachorro</option>
-
-            <option>Gato</option>
-
-          </select>
-
-        </div>
-
-
-        <div class="campo">
-
-          <label>Idade</label>
-
-          <input
-            name="petIdade"
-            [(ngModel)]="pet.idade"
-            placeholder="Ex.: 2 anos"
-          >
-
-        </div>
-
-
-        <div class="campo">
-
-          <label>Porte</label>
-
-          <select
-            name="petPorte"
-            [(ngModel)]="pet.porte"
-          >
-
-            <option>Pequeno</option>
-
-            <option>Médio</option>
-
-            <option>Grande</option>
-
-          </select>
-
-        </div>
-
-
-        <div class="campo">
-
-          <label>Sexo</label>
-
-          <select
-            name="petSexo"
-            [(ngModel)]="pet.sexo"
-          >
-
-            <option>Macho</option>
-
-            <option>Fêmea</option>
-
-          </select>
-
-        </div>
-
-
-        <div class="campo">
-
-          <label>Bairro</label>
-
-          <input
-            name="petBairro"
-            [(ngModel)]="pet.bairro"
-            placeholder="Ex.: Itapuã"
-          >
-
-        </div>
-
-      </div>
-
-
-      <div class="campo">
-
-        <label>Descrição</label>
-
-        <textarea
-          rows="5"
-          name="petDescricao"
-          [(ngModel)]="pet.descricao"
-          placeholder="Conte um pouco sobre o comportamento e as necessidades do animal."
-        ></textarea>
-
-      </div>
-
-
-      <div class="campo">
-
-        <label>Foto do animal</label>
-
-        <input
-          class="input-foto"
-          type="file"
-          accept="image/*"
-          (change)="selecionarImagem($event)"
-        >
-
-        <small>
-          Escolha uma imagem JPG, PNG ou outro formato de imagem.
-          Máximo de 1,5 MB.
-        </small>
-
-      </div>
-
-
-      <div
-        class="preview"
-        *ngIf="imagemSelecionada"
-      >
-
-        <p>Pré-visualização</p>
-
-        <img
-          [src]="imagemSelecionada"
-          alt="Foto selecionada do animal"
-        >
+    <header>
 
         <span>
-          {{ nomeArquivo }}
+            Área protegida
         </span>
 
+
+        <h1>
+            O que você deseja publicar?
+        </h1>
+
+
+        <p>
+            Escolha entre divulgar um animal
+            para adoção ou criar uma publicação
+            para a comunidade.
+        </p>
+
+    </header>
+
+
+
+    <!-- ABAS -->
+
+    <div class="abas">
+
+
         <button
-          type="button"
-          class="remover-foto"
-          (click)="removerImagem()"
+            type="button"
+
+            [class.ativo]="
+                tipo === 'pet'
+            "
+
+            (click)="
+                tipo = 'pet';
+                mensagem = ''
+            "
         >
-          Remover foto
+
+            🐾 Animal para adoção
+
         </button>
 
-      </div>
 
+        <button
+            type="button"
 
-      <p class="aviso">
-        Neste protótipo sem API, os dados e a foto são
-        armazenados localmente no navegador.
-      </p>
+            [class.ativo]="
+                tipo === 'post'
+            "
 
-
-      <p
-        class="mensagem-sucesso"
-        *ngIf="mensagem"
-      >
-        {{ mensagem }}
-      </p>
-
-
-      <button
-        class="botao"
-        type="submit"
-      >
-        Publicar animal
-      </button>
-
-    </form>
-
-  </section>
-
-
-  <section
-    class="card-form"
-    *ngIf="tipo === 'post'"
-  >
-
-    <form (ngSubmit)="publicarPost()">
-
-      <div class="campo">
-
-        <label>Categoria</label>
-
-        <select
-          name="categoria"
-          [(ngModel)]="post.categoria"
+            (click)="
+                tipo = 'post';
+                mensagem = ''
+            "
         >
 
-          <option value="ONG">ONG</option>
+            💬 Post da comunidade
 
-          <option value="Evento">Evento</option>
+        </button>
 
-          <option value="Ajuda">Ajuda</option>
-
-          <option value="Informação">Informação</option>
-
-        </select>
-
-      </div>
+    </div>
 
 
-      <div class="campo">
 
-        <label>Publicação</label>
+    <!-- PUBLICAR ANIMAL -->
 
-        <textarea
-          rows="7"
-          name="postTexto"
-          [(ngModel)]="post.texto"
-          placeholder="Compartilhe uma campanha, evento ou informação útil."
-        ></textarea>
+    <section
+        class="card-form"
 
-      </div>
+        *ngIf="
+            tipo === 'pet'
+        "
+    >
 
 
-      <p
-        class="mensagem-sucesso"
-        *ngIf="mensagem"
-      >
-        {{ mensagem }}
-      </p>
+        <form
+            (ngSubmit)="
+                publicarPet()
+            "
+        >
 
 
-      <button
-        class="botao"
-        type="submit"
-      >
-        Publicar na comunidade
-      </button>
+            <div class="grade-form">
 
-    </form>
 
-  </section>
+                <div class="campo">
+
+                    <label for="petNome">
+                        Nome
+                    </label>
+
+                    <input
+                        id="petNome"
+                        name="petNome"
+
+                        [(ngModel)]="
+                            pet.nome
+                        "
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="petEspecie">
+                        Espécie
+                    </label>
+
+                    <select
+                        id="petEspecie"
+                        name="petEspecie"
+
+                        [(ngModel)]="
+                            pet.especie
+                        "
+                    >
+
+                        <option value="Cachorro">
+                            Cachorro
+                        </option>
+
+                        <option value="Gato">
+                            Gato
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="petIdade">
+                        Idade
+                    </label>
+
+                    <input
+                        id="petIdade"
+                        name="petIdade"
+
+                        [(ngModel)]="
+                            pet.idade
+                        "
+
+                        placeholder="Ex.: 2 anos"
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="petPorte">
+                        Porte
+                    </label>
+
+                    <select
+                        id="petPorte"
+                        name="petPorte"
+
+                        [(ngModel)]="
+                            pet.porte
+                        "
+                    >
+
+                        <option value="Pequeno">
+                            Pequeno
+                        </option>
+
+                        <option value="Médio">
+                            Médio
+                        </option>
+
+                        <option value="Grande">
+                            Grande
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="petSexo">
+                        Sexo
+                    </label>
+
+                    <select
+                        id="petSexo"
+                        name="petSexo"
+
+                        [(ngModel)]="
+                            pet.sexo
+                        "
+                    >
+
+                        <option value="Macho">
+                            Macho
+                        </option>
+
+                        <option value="Fêmea">
+                            Fêmea
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="petBairro">
+                        Bairro
+                    </label>
+
+                    <input
+                        id="petBairro"
+                        name="petBairro"
+
+                        [(ngModel)]="
+                            pet.bairro
+                        "
+
+                        placeholder="Ex.: Itapuã"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <div class="campo">
+
+                <label for="petDescricao">
+                    Descrição
+                </label>
+
+                <textarea
+                    id="petDescricao"
+
+                    rows="5"
+
+                    name="petDescricao"
+
+                    [(ngModel)]="
+                        pet.descricao
+                    "
+
+                    placeholder="Conte um pouco sobre o comportamento e as necessidades do animal."
+                >
+                </textarea>
+
+            </div>
+
+
+
+            <!-- FOTO DO ANIMAL -->
+
+            <div class="campo">
+
+                <label for="fotoPet">
+                    Foto do animal
+                </label>
+
+
+                <input
+                    id="fotoPet"
+
+                    class="input-foto"
+
+                    type="file"
+
+                    accept="image/*"
+
+                    (change)="
+                        selecionarImagem(
+                            $event
+                        )
+                    "
+                >
+
+
+                <small>
+                    Escolha uma imagem.
+                    Máximo de 1,5 MB.
+                </small>
+
+            </div>
+
+
+
+            <div
+                class="preview"
+
+                *ngIf="
+                    imagemSelecionada
+                "
+            >
+
+                <p>
+                    Pré-visualização
+                </p>
+
+
+                <img
+                    [src]="
+                        imagemSelecionada
+                    "
+
+                    alt="Foto selecionada do animal"
+                >
+
+
+                <span>
+                    {{ nomeArquivo }}
+                </span>
+
+
+                <button
+                    type="button"
+
+                    class="remover-foto"
+
+                    (click)="
+                        removerImagem()
+                    "
+                >
+
+                    Remover foto
+
+                </button>
+
+            </div>
+
+
+
+            <p class="aviso">
+
+                Neste protótipo sem API,
+                os dados e imagens são salvos
+                no próprio navegador.
+
+            </p>
+
+
+            <p
+                class="mensagem-sucesso"
+
+                *ngIf="mensagem"
+            >
+
+                {{ mensagem }}
+
+            </p>
+
+
+            <button
+                class="botao"
+
+                type="submit"
+            >
+
+                Publicar animal
+
+            </button>
+
+        </form>
+
+    </section>
+
+
+
+    <!-- POST DA COMUNIDADE -->
+
+    <section
+        class="card-form"
+
+        *ngIf="
+            tipo === 'post'
+        "
+    >
+
+
+        <form
+            (ngSubmit)="
+                publicarPost()
+            "
+        >
+
+
+            <div class="campo">
+
+                <label for="categoria">
+                    Categoria
+                </label>
+
+
+                <select
+                    id="categoria"
+
+                    name="categoria"
+
+                    [(ngModel)]="
+                        post.categoria
+                    "
+                >
+
+                    <option value="ONG">
+                        ONG
+                    </option>
+
+                    <option value="Evento">
+                        Evento
+                    </option>
+
+                    <option value="Ajuda">
+                        Ajuda
+                    </option>
+
+                    <option value="Informação">
+                        Informação
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <div class="campo">
+
+                <label for="postTexto">
+                    Publicação
+                </label>
+
+
+                <textarea
+                    id="postTexto"
+
+                    rows="7"
+
+                    name="postTexto"
+
+                    [(ngModel)]="
+                        post.texto
+                    "
+
+                    placeholder="Compartilhe uma campanha, evento ou informação útil."
+                >
+                </textarea>
+
+            </div>
+
+
+
+            <!-- IMAGEM DO POST -->
+
+            <div class="campo">
+
+                <label for="imagemPost">
+                    Imagem da publicação
+                </label>
+
+
+                <input
+                    id="imagemPost"
+
+                    class="input-foto"
+
+                    type="file"
+
+                    accept="image/*"
+
+                    (change)="
+                        selecionarImagemPost(
+                            $event
+                        )
+                    "
+                >
+
+
+                <small>
+
+                    A imagem é opcional.
+                    Máximo de 1 MB.
+
+                </small>
+
+            </div>
+
+
+
+            <!-- PRÉ-VISUALIZAÇÃO -->
+
+            <div
+                class="preview preview-post"
+
+                *ngIf="
+                    imagemPostSelecionada
+                "
+            >
+
+
+                <p>
+                    Pré-visualização
+                </p>
+
+
+                <img
+                    [src]="
+                        imagemPostSelecionada
+                    "
+
+                    alt="Imagem selecionada para a publicação"
+                >
+
+
+                <span>
+                    {{ nomeArquivoPost }}
+                </span>
+
+
+                <button
+                    type="button"
+
+                    class="remover-foto"
+
+                    (click)="
+                        removerImagemPost()
+                    "
+                >
+
+                    Remover imagem
+
+                </button>
+
+            </div>
+
+
+
+            <p class="aviso">
+
+                A imagem ficará armazenada
+                no navegador junto com a publicação.
+
+            </p>
+
+
+
+            <p
+                class="mensagem-sucesso"
+
+                *ngIf="mensagem"
+            >
+
+                {{ mensagem }}
+
+            </p>
+
+
+
+            <button
+                class="botao"
+
+                type="submit"
+            >
+
+                Publicar na comunidade
+
+            </button>
+
+        </form>
+
+    </section>
+
 
 </main>
+
 
 <app-footer></app-footer>

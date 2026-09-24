@@ -1,45 +1,248 @@
 <app-menu></app-menu>
 
+
 <main class="container comunidade">
-  <section class="intro">
-    <div>
-      <span>Comunidade AdotaSSA</span>
-      <h1>Informação, apoio e visibilidade para quem cuida.</h1>
-      <p>Um espaço para divulgar ONGs, eventos, campanhas e pedidos de ajuda relacionados à proteção animal em Salvador.</p>
-    </div>
-    <a class="botao" routerLink="/publicar">Criar publicação</a>
-  </section>
 
-  <section class="layout">
-    <div class="feed">
-      <article class="post" *ngFor="let post of posts">
-        <header>
-          <div><strong>{{ post.autor }}</strong><small>{{ post.data }}</small></div>
-          <span>{{ post.categoria }}</span>
-        </header>
-        <p class="texto">{{ post.texto }}</p>
-        <div class="acoes-post">
-          <button type="button" (click)="curtir(post.id)">❤️ {{ post.curtidas }} curtidas</button>
-          <span>💬 {{ post.comentarios.length }} comentário(s)</span>
+
+    <section class="intro">
+
+
+        <div>
+
+            <span>
+                Comunidade AdotaSSA
+            </span>
+
+
+            <h1>
+                Informação, apoio e
+                visibilidade para quem cuida.
+            </h1>
+
+
+            <p>
+                Um espaço para divulgar ONGs,
+                eventos, campanhas e pedidos de
+                ajuda relacionados à proteção
+                animal em Salvador.
+            </p>
+
         </div>
 
-        <div class="comentarios" *ngIf="post.comentarios.length">
-          <p *ngFor="let comentario of post.comentarios">{{ comentario }}</p>
+
+        <a
+            class="botao"
+
+            routerLink="/publicar"
+        >
+
+            Criar publicação
+
+        </a>
+
+    </section>
+
+
+
+    <section class="layout">
+
+
+        <div class="feed">
+
+
+            <article
+                class="post"
+
+                *ngFor="
+                    let post
+                    of posts
+                "
+            >
+
+
+                <header>
+
+
+                    <div>
+
+                        <strong>
+                            {{ post.autor }}
+                        </strong>
+
+                        <small>
+                            {{ post.data }}
+                        </small>
+
+                    </div>
+
+
+                    <span>
+                        {{ post.categoria }}
+                    </span>
+
+                </header>
+
+
+
+                <!-- IMAGEM DO POST -->
+
+                <img
+                    class="imagem-post"
+
+                    *ngIf="
+                        post.imagem
+                    "
+
+                    [src]="
+                        post.imagem
+                    "
+
+                    [alt]="
+                        'Imagem da publicação de ' +
+                        post.autor
+                    "
+                >
+
+
+
+                <p class="texto">
+
+                    {{ post.texto }}
+
+                </p>
+
+
+
+                <div class="acoes-post">
+
+
+                    <button
+                        type="button"
+
+                        (click)="
+                            curtir(
+                                post.id
+                            )
+                        "
+                    >
+
+                        ❤️
+                        {{ post.curtidas }}
+                        curtidas
+
+                    </button>
+
+
+                    <span>
+
+                        💬
+                        {{
+                            post.comentarios.length
+                        }}
+                        comentário(s)
+
+                    </span>
+
+                </div>
+
+
+
+                <div
+                    class="comentarios"
+
+                    *ngIf="
+                        post.comentarios.length
+                    "
+                >
+
+
+                    <p
+                        *ngFor="
+                            let comentario
+                            of post.comentarios
+                        "
+                    >
+
+                        {{ comentario }}
+
+                    </p>
+
+                </div>
+
+
+
+                <div class="novo-comentario">
+
+
+                    <input
+                        [(ngModel)]="
+                            comentarios[
+                                post.id
+                            ]
+                        "
+
+                        [name]="
+                            'comentario-' +
+                            post.id
+                        "
+
+                        placeholder="Escreva um comentário"
+                    >
+
+
+                    <button
+                        type="button"
+
+                        (click)="
+                            comentar(
+                                post.id
+                            )
+                        "
+                    >
+
+                        Enviar
+
+                    </button>
+
+                </div>
+
+            </article>
+
         </div>
 
-        <div class="novo-comentario">
-          <input [(ngModel)]="comentarios[post.id]" [name]="'comentario-' + post.id" placeholder="Escreva um comentário">
-          <button type="button" (click)="comentar(post.id)">Enviar</button>
-        </div>
-      </article>
-    </div>
 
-    <aside>
-      <h3>Por que uma comunidade?</h3>
-      <p>A adoção é apenas uma parte da proteção animal. Divulgar campanhas, eventos e necessidades locais ajuda a fortalecer a rede de apoio.</p>
-      <div class="dica">💡 Dica: confirme as informações antes de compartilhar pedidos de doação.</div>
-    </aside>
-  </section>
+
+        <aside>
+
+
+            <h3>
+                Por que uma comunidade?
+            </h3>
+
+
+            <p>
+                A adoção é apenas uma parte da
+                proteção animal. Divulgar campanhas,
+                eventos e necessidades locais ajuda
+                a fortalecer a rede de apoio.
+            </p>
+
+
+            <div class="dica">
+
+                💡 Dica: confirme as informações
+                antes de compartilhar pedidos
+                de doação.
+
+            </div>
+
+        </aside>
+
+
+    </section>
+
+
 </main>
+
 
 <app-footer></app-footer>
