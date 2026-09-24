@@ -1,29 +1,40 @@
 <app-menu></app-menu>
 
+
 <main class="container perfil">
 
-    <!-- PERFIL DO USUÁRIO -->
+
+    <!-- PERFIL -->
 
     <section class="cartao-perfil">
+
 
         <div class="avatar">
 
             {{
-                usuario?.nome?.charAt(0)?.toUpperCase()
+                usuario?.nome
+                    ?.charAt(0)
+                    ?.toUpperCase()
                 || 'U'
             }}
 
         </div>
 
-        <span>Meu perfil</span>
+
+        <span>
+            Meu perfil
+        </span>
+
 
         <h1>
             {{ usuario?.nome }}
         </h1>
 
+
         <p>
             {{ usuario?.email }}
         </p>
+
 
         <div class="info-lgpd">
 
@@ -32,9 +43,10 @@
             </h3>
 
             <p>
-                O cadastro fica armazenado somente
-                no navegador por meio do localStorage.
-                A sessão utiliza sessionStorage.
+                O cadastro fica armazenado
+                somente no navegador por meio
+                do localStorage. A sessão
+                utiliza sessionStorage.
             </p>
 
         </div>
@@ -42,13 +54,17 @@
     </section>
 
 
+
     <!-- ALTERAR SENHA -->
 
     <section class="alterar-senha">
 
+
         <div class="titulo-secao">
 
-            <span>Segurança</span>
+            <span>
+                Segurança
+            </span>
 
             <h2>
                 Alterar senha
@@ -61,10 +77,12 @@
 
         </div>
 
+
         <form
             class="form-senha"
             (ngSubmit)="alterarSenha()"
         >
+
 
             <div class="campo-senha">
 
@@ -122,7 +140,9 @@
                 class="mensagem-senha"
                 [class.sucesso]="senhaAlterada"
             >
+
                 {{ mensagemSenha }}
+
             </p>
 
 
@@ -130,7 +150,9 @@
                 type="submit"
                 class="botao-alterar-senha"
             >
+
                 Alterar senha
+
             </button>
 
         </form>
@@ -138,75 +160,178 @@
     </section>
 
 
-    <!-- ANIMAIS PUBLICADOS -->
+
+    <!-- SOLICITAÇÕES RECEBIDAS -->
 
     <section class="minhas-publicacoes">
 
+
         <div class="titulo-secao">
 
-            <span>Minhas publicações</span>
+            <span>
+                Adoção
+            </span>
 
             <h2>
-                Animais para adoção
+                Solicitações recebidas
             </h2>
+
+            <p>
+                Pessoas interessadas nos
+                animais que você publicou.
+            </p>
 
         </div>
 
 
         <div
             class="sem-publicacoes"
-            *ngIf="petsPublicados.length === 0"
+
+            *ngIf="
+                solicitacoesRecebidas.length
+                === 0
+            "
         >
 
-            Você ainda não publicou nenhum animal.
+            Nenhuma solicitação recebida.
 
         </div>
 
 
-        <div class="grid-publicacoes">
+        <div class="lista-solicitacoes">
+
 
             <article
-                class="card-pet"
-                *ngFor="let pet of petsPublicados"
+                class="card-solicitacao"
+
+                *ngFor="
+                    let solicitacao
+                    of solicitacoesRecebidas
+                "
             >
 
+
                 <img
-                    [src]="pet.imagem"
-                    [alt]="pet.nome"
+                    [src]="solicitacao.petImagem"
+                    [alt]="solicitacao.petNome"
                 >
 
-                <div class="conteudo">
 
-                    <span class="tipo">
-                        {{ pet.especie }}
+                <div class="dados-solicitacao">
+
+
+                    <span class="status-solicitacao">
+
+                        {{ solicitacao.status }}
+
                     </span>
 
+
                     <h3>
-                        {{ pet.nome }}
+
+                        Interesse em
+                        {{ solicitacao.petNome }}
+
                     </h3>
 
-                    <p class="localizacao">
-                        📍 {{ pet.bairro }}
-                    </p>
 
                     <p>
-                        {{ pet.idade }}
-                        •
-                        {{ pet.porte }}
-                        •
-                        {{ pet.sexo }}
+
+                        <strong>
+                            Interessado:
+                        </strong>
+
+                        {{
+                            solicitacao
+                                .interessadoNome
+                        }}
+
                     </p>
 
-                    <p class="descricao">
-                        {{ pet.descricao }}
+
+                    <p>
+
+                        {{
+                            solicitacao
+                                .interessadoEmail
+                        }}
+
                     </p>
+
+
+                    <p class="data">
+
+                        {{
+                            solicitacao
+                                .criadaEm
+                        }}
+
+                    </p>
+
+
+                    <div
+                        class="acoes-solicitacao"
+
+                        *ngIf="
+                            solicitacao.status
+                            === 'Pendente'
+                        "
+                    >
+
+
+                        <button
+                            type="button"
+                            class="aceitar"
+
+                            (click)="
+                                aceitarSolicitacao(
+                                    solicitacao.id
+                                )
+                            "
+                        >
+
+                            ✓ Aceitar
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="recusar"
+
+                            (click)="
+                                recusarSolicitacao(
+                                    solicitacao.id
+                                )
+                            "
+                        >
+
+                            ✕ Recusar
+
+                        </button>
+
+                    </div>
+
 
                     <button
-                        class="botao-excluir"
                         type="button"
-                        (click)="excluirPet(pet.id)"
+
+                        class="abrir-chat"
+
+                        *ngIf="
+                            solicitacao.status
+                            === 'Aceita'
+                        "
+
+                        (click)="
+                            abrirChat(
+                                solicitacao.id
+                            )
+                        "
                     >
-                        🗑 Excluir publicação
+
+                        💬 Abrir chat
+
                     </button>
 
                 </div>
@@ -218,16 +343,20 @@
     </section>
 
 
-    <!-- POSTS DA COMUNIDADE -->
+
+    <!-- INTERESSES ENVIADOS -->
 
     <section class="minhas-publicacoes">
 
+
         <div class="titulo-secao">
 
-            <span>Comunidade</span>
+            <span>
+                Adoção
+            </span>
 
             <h2>
-                Minhas publicações na comunidade
+                Meus interesses
             </h2>
 
         </div>
@@ -235,29 +364,305 @@
 
         <div
             class="sem-publicacoes"
-            *ngIf="postsPublicados.length === 0"
+
+            *ngIf="
+                solicitacoesEnviadas.length
+                === 0
+            "
         >
 
-            Você ainda não publicou nada na comunidade.
+            Você ainda não demonstrou
+            interesse em nenhum animal.
+
+        </div>
+
+
+        <div class="lista-solicitacoes">
+
+
+            <article
+                class="card-solicitacao"
+
+                *ngFor="
+                    let solicitacao
+                    of solicitacoesEnviadas
+                "
+            >
+
+
+                <img
+                    [src]="solicitacao.petImagem"
+                    [alt]="solicitacao.petNome"
+                >
+
+
+                <div class="dados-solicitacao">
+
+
+                    <span class="status-solicitacao">
+
+                        {{ solicitacao.status }}
+
+                    </span>
+
+
+                    <h3>
+                        {{ solicitacao.petNome }}
+                    </h3>
+
+
+                    <p>
+
+                        <strong>
+                            Responsável:
+                        </strong>
+
+                        {{
+                            solicitacao
+                                .doadorNome
+                        }}
+
+                    </p>
+
+
+                    <p>
+
+                        Solicitação:
+
+                        {{
+                            solicitacao
+                                .criadaEm
+                        }}
+
+                    </p>
+
+
+                    <button
+                        type="button"
+
+                        class="abrir-chat"
+
+                        *ngIf="
+                            solicitacao.status
+                            === 'Aceita'
+                        "
+
+                        (click)="
+                            abrirChat(
+                                solicitacao.id
+                            )
+                        "
+                    >
+
+                        💬 Conversar com responsável
+
+                    </button>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ANIMAIS PUBLICADOS -->
+
+    <section class="minhas-publicacoes">
+
+
+        <div class="titulo-secao">
+
+            <span>
+                Minhas publicações
+            </span>
+
+            <h2>
+                Animais para adoção
+            </h2>
+
+        </div>
+
+
+        <div
+            class="sem-publicacoes"
+
+            *ngIf="
+                petsPublicados.length === 0
+            "
+        >
+
+            Você ainda não publicou
+            nenhum animal.
+
+        </div>
+
+
+        <div class="grid-publicacoes">
+
+
+            <article
+                class="card-pet"
+
+                *ngFor="
+                    let pet
+                    of petsPublicados
+                "
+            >
+
+
+                <img
+                    [src]="pet.imagem"
+                    [alt]="pet.nome"
+                >
+
+
+                <div class="conteudo">
+
+
+                    <span class="tipo">
+
+                        {{ pet.especie }}
+
+                    </span>
+
+
+                    <h3>
+                        {{ pet.nome }}
+                    </h3>
+
+
+                    <p class="localizacao">
+
+                        📍 {{ pet.bairro }}
+
+                    </p>
+
+
+                    <p>
+
+                        {{ pet.idade }}
+
+                        •
+
+                        {{ pet.porte }}
+
+                        •
+
+                        {{ pet.sexo }}
+
+                    </p>
+
+
+                    <p
+                        class="status-animal"
+                        *ngIf="pet.status"
+                    >
+
+                        Status:
+                        <strong>
+                            {{ pet.status }}
+                        </strong>
+
+                    </p>
+
+
+                    <p class="descricao">
+
+                        {{ pet.descricao }}
+
+                    </p>
+
+
+                    <button
+                        class="botao-excluir"
+
+                        type="button"
+
+                        (click)="
+                            excluirPet(
+                                pet.id
+                            )
+                        "
+                    >
+
+                        🗑 Excluir publicação
+
+                    </button>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- POSTS -->
+
+    <section class="minhas-publicacoes">
+
+
+        <div class="titulo-secao">
+
+            <span>
+                Comunidade
+            </span>
+
+            <h2>
+                Minhas publicações
+                na comunidade
+            </h2>
+
+        </div>
+
+
+        <div
+            class="sem-publicacoes"
+
+            *ngIf="
+                postsPublicados.length
+                === 0
+            "
+        >
+
+            Você ainda não publicou
+            nada na comunidade.
 
         </div>
 
 
         <div class="lista-posts">
 
+
             <article
                 class="card-post"
-                *ngFor="let post of postsPublicados"
+
+                *ngFor="
+                    let post
+                    of postsPublicados
+                "
             >
+
 
                 <div class="topo-post">
 
+
                     <span class="categoria">
+
                         {{ post.categoria }}
+
                     </span>
 
+
                     <span class="data">
+
                         {{ post.data }}
+
                     </span>
 
                 </div>
@@ -275,12 +680,20 @@
 
                 <div class="estatisticas">
 
-                    <span>
-                        ❤️ {{ post.curtidas }}
-                    </span>
 
                     <span>
-                        💬 {{ post.comentarios.length }}
+
+                        ❤️
+                        {{ post.curtidas }}
+
+                    </span>
+
+
+                    <span>
+
+                        💬
+                        {{ post.comentarios.length }}
+
                     </span>
 
                 </div>
@@ -288,10 +701,18 @@
 
                 <button
                     class="botao-excluir"
+
                     type="button"
-                    (click)="excluirPost(post.id)"
+
+                    (click)="
+                        excluirPost(
+                            post.id
+                        )
+                    "
                 >
+
                     🗑 Excluir publicação
+
                 </button>
 
             </article>
@@ -301,13 +722,16 @@
     </section>
 
 
+
     <!-- CONTA -->
 
     <section class="acoes-conta">
 
+
         <h2>
             Conta
         </h2>
+
 
         <p>
             Você pode encerrar sua sessão
@@ -317,27 +741,38 @@
 
         <div class="acoes">
 
+
             <button
                 class="botao secundario"
+
                 type="button"
+
                 (click)="logout()"
             >
+
                 Encerrar sessão
+
             </button>
 
 
             <button
                 class="excluir"
+
                 type="button"
+
                 (click)="excluirConta()"
             >
+
                 Excluir minha conta
+
             </button>
 
         </div>
 
     </section>
 
+
 </main>
+
 
 <app-footer></app-footer>

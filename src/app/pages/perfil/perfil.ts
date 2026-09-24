@@ -1,18 +1,59 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import {
+  CommonModule
+} from '@angular/common';
 
-import { Menu } from '../../componentes/menu/menu';
-import { Footer } from '../../componentes/footer/footer';
+import {
+  Component
+} from '@angular/core';
 
-import { Auth } from '../../services/auth';
-import { PetService } from '../../services/pet';
-import { ComunidadeService } from '../../services/comunidade';
+import {
+  FormsModule
+} from '@angular/forms';
 
-import { UsuarioSessao } from '../../models/usuario.model';
-import { Pet } from '../../models/pet.model';
-import { Post } from '../../models/post.model';
+import {
+  Router
+} from '@angular/router';
+
+import {
+  Menu
+} from '../../componentes/menu/menu';
+
+import {
+  Footer
+} from '../../componentes/footer/footer';
+
+import {
+  Auth
+} from '../../services/auth';
+
+import {
+  PetService
+} from '../../services/pet';
+
+import {
+  ComunidadeService
+} from '../../services/comunidade';
+
+import {
+  AdocaoService
+} from '../../services/adocao';
+
+import {
+  UsuarioSessao
+} from '../../models/usuario.model';
+
+import {
+  Pet
+} from '../../models/pet.model';
+
+import {
+  Post
+} from '../../models/post.model';
+
+import {
+  SolicitacaoAdocao
+} from '../../models/solicitacao.model';
+
 
 @Component({
   selector: 'app-perfil',
@@ -25,17 +66,32 @@ import { Post } from '../../models/post.model';
     Footer
   ],
 
-  templateUrl: './perfil.html',
-  styleUrl: './perfil.css'
+  templateUrl:
+    './perfil.html',
+
+  styleUrl:
+    './perfil.css'
 })
 export class Perfil {
 
-  usuario: UsuarioSessao | null;
+  usuario:
+    UsuarioSessao | null;
 
 
-  petsPublicados: Pet[] = [];
+  petsPublicados:
+    Pet[] = [];
 
-  postsPublicados: Post[] = [];
+
+  postsPublicados:
+    Post[] = [];
+
+
+  solicitacoesRecebidas:
+    SolicitacaoAdocao[] = [];
+
+
+  solicitacoesEnviadas:
+    SolicitacaoAdocao[] = [];
 
 
   senhaAtual = '';
@@ -50,16 +106,31 @@ export class Perfil {
 
 
   constructor(
-    private auth: Auth,
-    private router: Router,
-    private petService: PetService,
-    private comunidadeService: ComunidadeService
+
+    private auth:
+      Auth,
+
+    private router:
+      Router,
+
+    private petService:
+      PetService,
+
+    private comunidadeService:
+      ComunidadeService,
+
+    private adocaoService:
+      AdocaoService
+
   ) {
 
     this.usuario =
       this.auth.usuarioAtual();
 
+
     this.carregarPublicacoes();
+
+    this.carregarSolicitacoes();
   }
 
 
@@ -71,15 +142,39 @@ export class Perfil {
 
 
     this.petsPublicados =
-      this.petService.listarDoUsuario(
-        this.usuario.id
-      );
+      this.petService
+        .listarDoUsuario(
+          this.usuario.id
+        );
 
 
     this.postsPublicados =
-      this.comunidadeService.listarDoUsuario(
-        this.usuario.id
-      );
+      this.comunidadeService
+        .listarDoUsuario(
+          this.usuario.id
+        );
+  }
+
+
+  carregarSolicitacoes(): void {
+
+    if (!this.usuario) {
+      return;
+    }
+
+
+    this.solicitacoesRecebidas =
+      this.adocaoService
+        .listarRecebidas(
+          this.usuario.id
+        );
+
+
+    this.solicitacoesEnviadas =
+      this.adocaoService
+        .listarEnviadas(
+          this.usuario.id
+        );
   }
 
 
@@ -117,8 +212,11 @@ export class Perfil {
 
     const resultado =
       this.auth.alterarSenha(
+
         this.senhaAtual,
+
         this.novaSenha
+
       );
 
 
@@ -130,27 +228,33 @@ export class Perfil {
       resultado.ok;
 
 
-    if (resultado.ok) {
+    if (
+      resultado.ok
+    ) {
 
       this.senhaAtual = '';
 
       this.novaSenha = '';
 
       this.confirmarNovaSenha = '';
+
     }
   }
 
 
-  excluirPet(id: number): void {
+  aceitarSolicitacao(
+    id: number
+  ): void {
 
     if (!this.usuario) {
       return;
     }
 
 
-    const confirmou = confirm(
-      'Deseja realmente apagar esta publicação de adoção?'
-    );
+    const confirmou =
+      confirm(
+        'Deseja aceitar esta solicitação de adoção?'
+      );
 
 
     if (!confirmou) {
@@ -158,26 +262,32 @@ export class Perfil {
     }
 
 
-    this.petService.excluirDoUsuario(
-      id,
-      this.usuario.id
-    );
+    this.adocaoService
+      .aceitar(
+        id,
+        this.usuario.id
+      );
 
+
+    this.carregarSolicitacoes();
 
     this.carregarPublicacoes();
   }
 
 
-  excluirPost(id: number): void {
+  recusarSolicitacao(
+    id: number
+  ): void {
 
     if (!this.usuario) {
       return;
     }
 
 
-    const confirmou = confirm(
-      'Deseja realmente apagar esta publicação da comunidade?'
-    );
+    const confirmou =
+      confirm(
+        'Deseja recusar esta solicitação?'
+      );
 
 
     if (!confirmou) {
@@ -185,10 +295,89 @@ export class Perfil {
     }
 
 
-    this.comunidadeService.excluirDoUsuario(
-      id,
-      this.usuario.id
+    this.adocaoService
+      .recusar(
+        id,
+        this.usuario.id
+      );
+
+
+    this.carregarSolicitacoes();
+  }
+
+
+  abrirChat(
+    id: number
+  ): void {
+
+    this.router.navigate(
+      ['/chat', id]
     );
+  }
+
+
+  excluirPet(
+    id: number
+  ): void {
+
+    if (!this.usuario) {
+      return;
+    }
+
+
+    const confirmou =
+      confirm(
+        'Deseja realmente apagar esta publicação de adoção?'
+      );
+
+
+    if (!confirmou) {
+      return;
+    }
+
+
+    this.adocaoService
+      .excluirPorPet(id);
+
+
+    this.petService
+      .excluirDoUsuario(
+        id,
+        this.usuario.id
+      );
+
+
+    this.carregarPublicacoes();
+
+    this.carregarSolicitacoes();
+  }
+
+
+  excluirPost(
+    id: number
+  ): void {
+
+    if (!this.usuario) {
+      return;
+    }
+
+
+    const confirmou =
+      confirm(
+        'Deseja realmente apagar esta publicação da comunidade?'
+      );
+
+
+    if (!confirmou) {
+      return;
+    }
+
+
+    this.comunidadeService
+      .excluirDoUsuario(
+        id,
+        this.usuario.id
+      );
 
 
     this.carregarPublicacoes();
@@ -199,15 +388,19 @@ export class Perfil {
 
     this.auth.logout();
 
-    this.router.navigate(['/home']);
+
+    this.router.navigate(
+      ['/home']
+    );
   }
 
 
   excluirConta(): void {
 
-    const confirmou = confirm(
-      'Deseja realmente excluir sua conta deste navegador?'
-    );
+    const confirmou =
+      confirm(
+        'Deseja realmente excluir sua conta deste navegador?'
+      );
 
 
     if (!confirmou) {
@@ -217,27 +410,52 @@ export class Perfil {
 
     if (this.usuario) {
 
+      this.adocaoService
+        .excluirDadosUsuario(
+          this.usuario.id
+        );
+
+
       this.petsPublicados.forEach(
+
         pet =>
-          this.petService.excluirDoUsuario(
-            pet.id,
-            this.usuario!.id
-          )
+
+          this.petService
+            .excluirDoUsuario(
+
+              pet.id,
+
+              this.usuario!.id
+
+            )
+
       );
 
 
       this.postsPublicados.forEach(
+
         post =>
-          this.comunidadeService.excluirDoUsuario(
-            post.id,
-            this.usuario!.id
-          )
+
+          this.comunidadeService
+            .excluirDoUsuario(
+
+              post.id,
+
+              this.usuario!.id
+
+            )
+
       );
+
     }
 
 
-    this.auth.excluirContaAtual();
+    this.auth
+      .excluirContaAtual();
 
-    this.router.navigate(['/home']);
+
+    this.router.navigate(
+      ['/home']
+    );
   }
 }

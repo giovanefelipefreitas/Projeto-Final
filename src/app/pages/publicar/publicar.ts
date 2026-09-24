@@ -1,22 +1,33 @@
 import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
+
 import { FormsModule } from '@angular/forms';
+
 import { Menu } from '../../componentes/menu/menu';
+
 import { Footer } from '../../componentes/footer/footer';
+
 import { PetService } from '../../services/pet';
+
 import { ComunidadeService } from '../../services/comunidade';
+
 import { Auth } from '../../services/auth';
+
 import { Post } from '../../models/post.model';
+
 
 @Component({
   selector: 'app-publicar',
   standalone: true,
+
   imports: [
     CommonModule,
     FormsModule,
     Menu,
     Footer
   ],
+
   templateUrl: './publicar.html',
   styleUrl: './publicar.css'
 })
@@ -32,44 +43,83 @@ export class Publicar {
 
 
   pet = {
+
     nome: '',
-    especie: 'Cachorro' as 'Cachorro' | 'Gato',
+
+    especie:
+      'Cachorro' as
+      'Cachorro' | 'Gato',
+
     idade: '',
-    porte: 'Médio' as 'Pequeno' | 'Médio' | 'Grande',
-    sexo: 'Macho' as 'Macho' | 'Fêmea',
+
+    porte:
+      'Médio' as
+      'Pequeno' |
+      'Médio' |
+      'Grande',
+
+    sexo:
+      'Macho' as
+      'Macho' |
+      'Fêmea',
+
     bairro: '',
+
     descricao: ''
+
   };
 
 
   post = {
-    categoria: 'Informação' as Post['categoria'],
+
+    categoria:
+      'Informação' as
+      Post['categoria'],
+
     texto: ''
+
   };
 
 
   constructor(
-    private petService: PetService,
-    private comunidadeService: ComunidadeService,
-    private auth: Auth
+
+    private petService:
+      PetService,
+
+    private comunidadeService:
+      ComunidadeService,
+
+    private auth:
+      Auth
+
   ) {}
 
 
-  selecionarImagem(event: Event): void {
+  selecionarImagem(
+    event: Event
+  ): void {
 
     this.mensagem = '';
 
-    const input =
-      event.target as HTMLInputElement;
 
-    const arquivo = input.files?.[0];
+    const input =
+      event.target as
+      HTMLInputElement;
+
+
+    const arquivo =
+      input.files?.[0];
+
 
     if (!arquivo) {
       return;
     }
 
 
-    if (!arquivo.type.startsWith('image/')) {
+    if (
+      !arquivo.type
+        .startsWith('image/')
+    ) {
 
       this.mensagem =
         'Selecione um arquivo de imagem.';
@@ -80,7 +130,10 @@ export class Publicar {
     }
 
 
-    if (arquivo.size > 1500000) {
+    if (
+      arquivo.size >
+      1500000
+    ) {
 
       this.mensagem =
         'A imagem deve ter no máximo 1,5 MB.';
@@ -91,7 +144,8 @@ export class Publicar {
     }
 
 
-    const leitor = new FileReader();
+    const leitor =
+      new FileReader();
 
 
     leitor.onload = () => {
@@ -101,6 +155,7 @@ export class Publicar {
 
       this.nomeArquivo =
         arquivo.name;
+
     };
 
 
@@ -108,10 +163,13 @@ export class Publicar {
 
       this.mensagem =
         'Não foi possível carregar a imagem.';
+
     };
 
 
-    leitor.readAsDataURL(arquivo);
+    leitor.readAsDataURL(
+      arquivo
+    );
   }
 
 
@@ -126,6 +184,7 @@ export class Publicar {
   publicarPet(): void {
 
     this.mensagem = '';
+
 
     const usuario =
       this.auth.usuarioAtual();
@@ -161,9 +220,13 @@ export class Publicar {
     if (!imagem) {
 
       imagem =
-        this.pet.especie === 'Gato'
+        this.pet.especie ===
+          'Gato'
+
           ? 'img/luna.svg'
+
           : 'img/caramelo.svg';
+
     }
 
 
@@ -171,13 +234,24 @@ export class Publicar {
 
       ...this.pet,
 
-      imagem: imagem,
+      imagem:
+        imagem,
 
-      usuarioId: usuario.id,
+      usuarioId:
+        usuario.id,
+
+      usuarioNome:
+        usuario.nome,
+
+      status:
+        'Disponível',
 
       compatibilidade: [
+
         'Adoção responsável',
+
         'Contato com responsável'
+
       ]
 
     });
@@ -188,13 +262,21 @@ export class Publicar {
 
 
     this.pet = {
+
       nome: '',
+
       especie: 'Cachorro',
+
       idade: '',
+
       porte: 'Médio',
+
       sexo: 'Macho',
+
       bairro: '',
+
       descricao: ''
+
     };
 
 
@@ -207,6 +289,7 @@ export class Publicar {
   publicarPost(): void {
 
     this.mensagem = '';
+
 
     const usuario =
       this.auth.usuarioAtual();
@@ -221,7 +304,9 @@ export class Publicar {
     }
 
 
-    if (!this.post.texto.trim()) {
+    if (
+      !this.post.texto.trim()
+    ) {
 
       this.mensagem =
         'Escreva o conteúdo da publicação.';

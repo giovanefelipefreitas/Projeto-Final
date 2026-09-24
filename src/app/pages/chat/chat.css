@@ -1,0 +1,350 @@
+.pagina-chat {
+    padding: 60px 0 80px;
+
+    max-width: 900px;
+}
+
+
+.chat {
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: white;
+
+    box-shadow: var(--sombra);
+}
+
+
+/* CABEÇALHO */
+
+.cabecalho-chat {
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    padding: 22px;
+
+    border-bottom:
+        1px solid var(--borda);
+}
+
+
+.cabecalho-chat img {
+    width: 85px;
+
+    height: 85px;
+
+    flex-shrink: 0;
+
+    object-fit: cover;
+
+    border-radius: 14px;
+}
+
+
+.dados-chat {
+    flex: 1;
+}
+
+
+.dados-chat > span {
+    color: #067647;
+
+    font-size: .78rem;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+}
+
+
+.dados-chat h1 {
+    margin: 4px 0;
+
+    color:
+        var(--azul-escuro);
+}
+
+
+.dados-chat p {
+    color:
+        var(--texto-suave);
+}
+
+
+/* OPÇÕES DO DOADOR */
+
+.acoes-processo {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 9px;
+
+    min-width: 190px;
+}
+
+
+.acoes-processo button {
+    border-radius: 10px;
+
+    padding: 10px 14px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+
+.concluir-adocao {
+    border: none;
+
+    background: #067647;
+
+    color: white;
+}
+
+
+.concluir-adocao:hover {
+    background: #05603a;
+}
+
+
+.cancelar-processo {
+    border:
+        1px solid #b42318;
+
+    background: white;
+
+    color: #b42318;
+}
+
+
+.cancelar-processo:hover {
+    background: #fff1f0;
+}
+
+
+/* AVISO */
+
+.aviso-chat {
+    padding: 15px 22px;
+
+    background:
+        var(--azul-claro);
+
+    color:
+        var(--texto-suave);
+
+    font-size: .9rem;
+
+    line-height: 1.5;
+}
+
+
+/* MENSAGENS */
+
+.mensagens {
+    min-height: 420px;
+
+    max-height: 520px;
+
+    overflow-y: auto;
+
+    padding: 25px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 14px;
+
+    background: #f7f9fa;
+}
+
+
+.sem-mensagens {
+    margin: auto;
+
+    color:
+        var(--texto-suave);
+
+    text-align: center;
+}
+
+
+.mensagem {
+    width: fit-content;
+
+    max-width: 75%;
+
+    padding: 12px 15px;
+
+    border-radius:
+        4px 15px 15px 15px;
+
+    background: white;
+
+    box-shadow:
+        0 3px 10px
+        rgba(0, 0, 0, .06);
+}
+
+
+.mensagem.minha {
+    margin-left: auto;
+
+    border-radius:
+        15px 4px 15px 15px;
+
+    background:
+        var(--azul-claro);
+}
+
+
+.mensagem strong {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color:
+        var(--azul-escuro);
+
+    font-size: .8rem;
+}
+
+
+.mensagem p {
+    line-height: 1.5;
+}
+
+
+.mensagem small {
+    display: block;
+
+    margin-top: 6px;
+
+    color:
+        var(--texto-suave);
+
+    font-size: .7rem;
+}
+
+
+/* ENVIAR */
+
+.enviar-mensagem {
+    display: flex;
+
+    gap: 10px;
+
+    padding: 18px;
+
+    border-top:
+        1px solid var(--borda);
+}
+
+
+.enviar-mensagem input {
+    flex: 1;
+
+    padding: 12px 14px;
+
+    border:
+        1px solid var(--borda);
+
+    border-radius: 10px;
+
+    font-size: 1rem;
+
+    outline: none;
+}
+
+
+.enviar-mensagem input:focus {
+    border-color:
+        var(--azul);
+}
+
+
+.enviar-mensagem > button {
+    border: 0;
+
+    padding: 0 22px;
+
+    border-radius: 10px;
+
+    background:
+        var(--azul);
+
+    color: white;
+
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+
+/* RESPONSIVO */
+
+@media (max-width: 750px) {
+
+    .cabecalho-chat {
+        align-items:
+            flex-start;
+
+        flex-wrap: wrap;
+    }
+
+
+    .acoes-processo {
+        width: 100%;
+
+        flex-direction: row;
+    }
+
+
+    .acoes-processo button {
+        flex: 1;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .cabecalho-chat img {
+        width: 65px;
+
+        height: 65px;
+    }
+
+
+    .mensagens {
+        min-height: 350px;
+    }
+
+
+    .mensagem {
+        max-width: 90%;
+    }
+
+
+    .enviar-mensagem {
+        flex-direction: column;
+    }
+
+
+    .enviar-mensagem > button {
+        padding: 12px;
+    }
+
+
+    .acoes-processo {
+        flex-direction: column;
+    }
+
+}

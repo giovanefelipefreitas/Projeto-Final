@@ -1,19 +1,115 @@
 <article class="card-pet">
-  <img [src]="pet.imagem" [alt]="pet.nome">
-  <div class="conteudo">
-    <div class="titulo">
-      <h3>{{ pet.nome }}</h3>
-      <span>{{ pet.especie }}</span>
-    </div>
-    <p class="local">📍 {{ pet.bairro }} · {{ pet.idade }} · {{ pet.porte }}</p>
-    <p>{{ pet.descricao }}</p>
 
-    <div class="tags">
-      <span *ngFor="let item of pet.compatibilidade">{{ item }}</span>
+
+    <img
+        [src]="pet.imagem"
+        [alt]="pet.nome"
+    >
+
+
+    <div class="conteudo">
+
+
+        <div class="titulo">
+
+            <h3>
+                {{ pet.nome }}
+            </h3>
+
+            <span>
+                {{ pet.especie }}
+            </span>
+
+        </div>
+
+
+        <p class="local">
+
+            📍 {{ pet.bairro }}
+
+            · {{ pet.idade }}
+
+            · {{ pet.porte }}
+
+        </p>
+
+
+        <p>
+            {{ pet.descricao }}
+        </p>
+
+
+        <div class="tags">
+
+            <span
+                *ngFor="
+                    let item
+                    of pet.compatibilidade
+                "
+            >
+
+                {{ item }}
+
+            </span>
+
+        </div>
+
+
+        <p
+            class="status-pet processo"
+
+            *ngIf="
+                pet.status ===
+                'Em processo de adoção'
+            "
+        >
+
+            🤝 Em processo de adoção
+
+        </p>
+
+
+        <p
+            class="status-pet adotado"
+
+            *ngIf="
+                pet.status ===
+                'Adotado'
+            "
+        >
+
+            ❤️ Adotado
+
+        </p>
+
+
+        <button
+            type="button"
+
+            [disabled]="
+                botaoDesativado
+            "
+
+            (click)="
+                demonstrarInteresse()
+            "
+        >
+
+            {{ textoBotao }}
+
+        </button>
+
+
+        <p
+            class="mensagem-interesse"
+
+            *ngIf="mensagem"
+        >
+
+            {{ mensagem }}
+
+        </p>
+
     </div>
 
-    <button type="button" (click)="demonstrarInteresse()">
-      {{ interessado ? 'Interesse registrado ✓' : 'Tenho interesse em adotar' }}
-    </button>
-  </div>
 </article>

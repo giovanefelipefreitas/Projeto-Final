@@ -1,0 +1,204 @@
+<app-menu></app-menu>
+
+
+<main class="container pagina-chat">
+
+
+    <section
+        class="chat"
+        *ngIf="solicitacao"
+    >
+
+
+        <header class="cabecalho-chat">
+
+
+            <img
+                [src]="
+                    solicitacao.petImagem
+                "
+
+                [alt]="
+                    solicitacao.petNome
+                "
+            >
+
+
+            <div class="dados-chat">
+
+
+                <span>
+                    Adoção aceita
+                </span>
+
+
+                <h1>
+                    {{ solicitacao.petNome }}
+                </h1>
+
+
+                <p>
+
+                    Conversando com
+
+                    <strong>
+                        {{ outroUsuario }}
+                    </strong>
+
+                </p>
+
+            </div>
+
+
+            <!--
+                Somente quem publicou
+                o animal vê estas opções.
+            -->
+
+            <div
+                class="acoes-processo"
+                *ngIf="ehDoador"
+            >
+
+
+                <button
+                    type="button"
+                    class="concluir-adocao"
+                    (click)="
+                        marcarComoAdotado()
+                    "
+                >
+
+                    ✓ Marcar como adotado
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="cancelar-processo"
+                    (click)="
+                        cancelarProcesso()
+                    "
+                >
+
+                    ✕ Cancelar processo
+
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <div class="aviso-chat">
+
+            💡 Use este espaço para
+            conversar sobre os detalhes
+            da adoção.
+
+            Caso combinem um encontro,
+            prefiram um local público e
+            seguro.
+
+        </div>
+
+
+        <section class="mensagens">
+
+
+            <div
+                class="sem-mensagens"
+
+                *ngIf="
+                    mensagens.length
+                    === 0
+                "
+            >
+
+                Nenhuma mensagem ainda.
+
+                Comece a conversa!
+
+            </div>
+
+
+            <div
+                class="mensagem"
+
+                *ngFor="
+                    let mensagem
+                    of mensagens
+                "
+
+                [class.minha]="
+                    mensagem.autorId
+                    === usuario?.id
+                "
+            >
+
+
+                <strong>
+
+                    {{
+                        mensagem.autorNome
+                    }}
+
+                </strong>
+
+
+                <p>
+
+                    {{
+                        mensagem.texto
+                    }}
+
+                </p>
+
+
+                <small>
+
+                    {{
+                        mensagem.enviadaEm
+                    }}
+
+                </small>
+
+            </div>
+
+        </section>
+
+
+        <form
+            class="enviar-mensagem"
+            (ngSubmit)="enviar()"
+        >
+
+
+            <input
+                type="text"
+
+                name="mensagem"
+
+                [(ngModel)]="texto"
+
+                placeholder="Digite uma mensagem..."
+            >
+
+
+            <button
+                type="submit"
+            >
+
+                Enviar
+
+            </button>
+
+        </form>
+
+    </section>
+
+</main>
+
+
+<app-footer></app-footer>

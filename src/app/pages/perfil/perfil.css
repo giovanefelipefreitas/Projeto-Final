@@ -3,7 +3,7 @@
 }
 
 
-/* PERFIL DO USUÁRIO */
+/* PERFIL */
 
 .cartao-perfil {
     width: min(700px, 100%);
@@ -98,6 +98,146 @@
 }
 
 
+/* ALTERAR SENHA */
+
+.alterar-senha {
+    width: min(700px, 100%);
+
+    margin: 0 auto 60px;
+
+    padding: 30px;
+
+    border-radius: 20px;
+
+    background: white;
+
+    box-shadow: var(--sombra);
+}
+
+
+.alterar-senha .titulo-secao {
+    margin-bottom: 25px;
+}
+
+
+.alterar-senha
+.titulo-secao span {
+    color: var(--laranja-escuro);
+
+    font-size: .8rem;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+}
+
+
+.alterar-senha
+.titulo-secao h2 {
+    margin-top: 5px;
+
+    color: var(--azul-escuro);
+}
+
+
+.alterar-senha
+.titulo-secao p {
+    margin-top: 8px;
+
+    color: var(--texto-suave);
+
+    line-height: 1.5;
+}
+
+
+.form-senha {
+    display: grid;
+
+    gap: 18px;
+}
+
+
+.campo-senha {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.campo-senha label {
+    color: var(--azul-escuro);
+
+    font-weight: 700;
+}
+
+
+.campo-senha input {
+    width: 100%;
+
+    padding: 12px 14px;
+
+    border:
+        1px solid #cbd5dc;
+
+    border-radius: 10px;
+
+    font-size: 1rem;
+
+    outline: none;
+}
+
+
+.campo-senha input:focus {
+    border-color: var(--azul);
+}
+
+
+.botao-alterar-senha {
+    width: fit-content;
+
+    padding: 11px 20px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: var(--azul);
+
+    color: white;
+
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+
+.botao-alterar-senha:hover {
+    opacity: .9;
+}
+
+
+.mensagem-senha {
+    padding: 11px 14px;
+
+    border-radius: 9px;
+
+    background: #fff1f0;
+
+    color: #b42318;
+
+    font-weight: 700;
+}
+
+
+.mensagem-senha.sucesso {
+    background: #ecfdf3;
+
+    color: #067647;
+}
+
+
 /* PUBLICAÇÕES */
 
 .minhas-publicacoes {
@@ -130,6 +270,13 @@
 }
 
 
+.titulo-secao p {
+    margin-top: 8px;
+
+    color: var(--texto-suave);
+}
+
+
 .sem-publicacoes {
     padding: 25px;
 
@@ -145,13 +292,153 @@
 }
 
 
+/* SOLICITAÇÕES */
+
+.lista-solicitacoes {
+    display: grid;
+
+    gap: 18px;
+}
+
+
+.card-solicitacao {
+    display: grid;
+
+    grid-template-columns:
+        150px 1fr;
+
+    overflow: hidden;
+
+    border-radius: 18px;
+
+    background: white;
+
+    box-shadow: var(--sombra);
+}
+
+
+.card-solicitacao img {
+    width: 100%;
+
+    height: 100%;
+
+    min-height: 180px;
+
+    object-fit: cover;
+}
+
+
+.dados-solicitacao {
+    padding: 22px;
+}
+
+
+.dados-solicitacao h3 {
+    margin: 8px 0 12px;
+
+    color: var(--azul-escuro);
+}
+
+
+.dados-solicitacao p {
+    margin-top: 6px;
+
+    color: var(--texto-suave);
+}
+
+
+.status-solicitacao {
+    display: inline-block;
+
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    background: var(--azul-claro);
+
+    color: var(--azul);
+
+    font-size: .78rem;
+
+    font-weight: 800;
+}
+
+
+.acoes-solicitacao {
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 18px;
+
+    flex-wrap: wrap;
+}
+
+
+.aceitar {
+    border: 0;
+
+    border-radius: 9px;
+
+    padding: 10px 16px;
+
+    background: #067647;
+
+    color: white;
+
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+
+.recusar {
+    border:
+        1px solid #b42318;
+
+    border-radius: 9px;
+
+    padding: 10px 16px;
+
+    background: white;
+
+    color: #b42318;
+
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+
+.abrir-chat {
+    margin-top: 18px;
+
+    border: 0;
+
+    border-radius: 10px;
+
+    padding: 11px 18px;
+
+    background: var(--azul);
+
+    color: white;
+
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+
 /* PETS */
 
 .grid-publicacoes {
     display: grid;
 
     grid-template-columns:
-        repeat(auto-fit, minmax(260px, 1fr));
+        repeat(
+            auto-fit,
+            minmax(260px, 1fr)
+        );
 
     gap: 22px;
 }
@@ -209,6 +496,13 @@
 }
 
 
+.status-animal {
+    margin-top: 10px;
+
+    color: var(--azul);
+}
+
+
 .descricao {
     margin-top: 12px;
 
@@ -243,7 +537,8 @@
 
     align-items: center;
 
-    justify-content: space-between;
+    justify-content:
+        space-between;
 
     gap: 15px;
 }
@@ -254,7 +549,8 @@
 
     border-radius: 20px;
 
-    background: var(--azul-claro);
+    background:
+        var(--azul-claro);
 
     color: var(--azul);
 
@@ -298,14 +594,15 @@
 }
 
 
-/* EXCLUIR PUBLICAÇÃO */
+/* EXCLUIR */
 
 .botao-excluir {
     margin-top: 18px;
 
     padding: 10px 15px;
 
-    border: 1px solid #d92d20;
+    border:
+        1px solid #d92d20;
 
     border-radius: 10px;
 
@@ -367,7 +664,8 @@
 .excluir {
     padding: 10px 18px;
 
-    border: 1px solid #d92d20;
+    border:
+        1px solid #d92d20;
 
     border-radius: 12px;
 
@@ -391,12 +689,23 @@
 @media (max-width: 700px) {
 
     .perfil {
-        padding: 35px 0 60px;
+        padding:
+            35px 0 60px;
     }
 
 
     .cartao-perfil {
         padding: 25px;
+    }
+
+
+    .alterar-senha {
+        padding: 22px;
+    }
+
+
+    .botao-alterar-senha {
+        width: 100%;
     }
 
 
@@ -406,7 +715,8 @@
 
 
     .grid-publicacoes {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            1fr;
     }
 
 
@@ -416,158 +726,26 @@
 
 
     .topo-post {
-        align-items: flex-start;
+        align-items:
+            flex-start;
 
-        flex-direction: column;
+        flex-direction:
+            column;
     }
 
 }
 
-/* ALTERAR SENHA */
 
-.alterar-senha {
-    width: min(700px, 100%);
+@media (max-width: 600px) {
 
-    margin: 0 auto 60px;
-
-    padding: 30px;
-
-    border-radius: 20px;
-
-    background: white;
-
-    box-shadow: var(--sombra);
-}
-
-
-.alterar-senha .titulo-secao {
-    margin-bottom: 25px;
-}
-
-
-.alterar-senha .titulo-secao span {
-    color: var(--laranja-escuro);
-
-    font-size: .8rem;
-
-    font-weight: 800;
-
-    text-transform: uppercase;
-}
-
-
-.alterar-senha .titulo-secao h2 {
-    margin-top: 5px;
-
-    color: var(--azul-escuro);
-}
-
-
-.alterar-senha .titulo-secao p {
-    margin-top: 8px;
-
-    color: var(--texto-suave);
-
-    line-height: 1.5;
-}
-
-
-.form-senha {
-    display: grid;
-
-    gap: 18px;
-}
-
-
-.campo-senha {
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 7px;
-}
-
-
-.campo-senha label {
-    color: var(--azul-escuro);
-
-    font-weight: 700;
-}
-
-
-.campo-senha input {
-    width: 100%;
-
-    padding: 12px 14px;
-
-    border: 1px solid #cbd5dc;
-
-    border-radius: 10px;
-
-    font-size: 1rem;
-
-    outline: none;
-}
-
-
-.campo-senha input:focus {
-    border-color: var(--azul);
-}
-
-
-.botao-alterar-senha {
-    width: fit-content;
-
-    padding: 11px 20px;
-
-    border: none;
-
-    border-radius: 10px;
-
-    background: var(--azul);
-
-    color: white;
-
-    font-weight: 800;
-
-    cursor: pointer;
-}
-
-
-.botao-alterar-senha:hover {
-    opacity: .9;
-}
-
-
-.mensagem-senha {
-    padding: 11px 14px;
-
-    border-radius: 9px;
-
-    background: #fff1f0;
-
-    color: #b42318;
-
-    font-weight: 700;
-}
-
-
-.mensagem-senha.sucesso {
-    background: #ecfdf3;
-
-    color: #067647;
-}
-
-
-@media (max-width: 700px) {
-
-    .alterar-senha {
-        padding: 22px;
+    .card-solicitacao {
+        grid-template-columns:
+            1fr;
     }
 
 
-    .botao-alterar-senha {
-        width: 100%;
+    .card-solicitacao img {
+        height: 220px;
     }
 
 }
