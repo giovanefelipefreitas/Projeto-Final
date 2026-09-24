@@ -84,6 +84,11 @@ export class Adocao {
   }
 
 
+  /*
+    Atualiza os animais automaticamente
+    quando outra aba alterar o localStorage.
+  */
+
   @HostListener(
     'window:storage',
     ['$event']
@@ -103,29 +108,17 @@ export class Adocao {
   }
 
 
-  get bairros():
-    string[] {
-
-    return [
-
-      ...new Set(
-
-        this.pets.map(
-          pet =>
-            pet.bairro
-        )
-
-      )
-
-    ].sort();
-  }
-
-
   get filtrados():
     Pet[] {
 
-    const busca =
+    const buscaDigitada =
       this.busca
+        .trim()
+        .toLowerCase();
+
+
+    const bairroDigitado =
+      this.bairro
         .trim()
         .toLowerCase();
 
@@ -134,26 +127,27 @@ export class Adocao {
 
       pet => {
 
+
+        /*
+          FILTRO PELO NOME
+        */
+
         const combinaBusca =
 
-          !busca
+          !buscaDigitada
 
           ||
 
           pet.nome
             .toLowerCase()
             .includes(
-              busca
-            )
-
-          ||
-
-          pet.bairro
-            .toLowerCase()
-            .includes(
-              busca
+              buscaDigitada
             );
 
+
+        /*
+          FILTRO PELA ESPÉCIE
+        */
 
         const combinaEspecie =
 
@@ -165,25 +159,40 @@ export class Adocao {
             this.especie;
 
 
+        /*
+          FILTRO PELO BAIRRO
+
+          Não precisa digitar o nome
+          inteiro do bairro.
+        */
+
         const combinaBairro =
 
-          !this.bairro
+          !bairroDigitado
 
           ||
 
-          pet.bairro ===
-            this.bairro;
+          pet.bairro
+            .toLowerCase()
+            .includes(
+              bairroDigitado
+            );
 
 
         return (
 
-          combinaBusca &&
+          combinaBusca
 
-          combinaEspecie &&
+          &&
+
+          combinaEspecie
+
+          &&
 
           combinaBairro
 
         );
+
       }
 
     );
