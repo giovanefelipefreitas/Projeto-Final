@@ -3,7 +3,8 @@ export type StatusSolicitacao =
   'Aceita' |
   'Recusada' |
   'Cancelada' |
-  'Concluída';
+  'Concluída' |
+  'Bloqueada';
 
 
 export interface SolicitacaoAdocao {
@@ -45,4 +46,22 @@ export interface MensagemChat {
   texto: string;
 
   enviadaEm: string;
+}
+
+
+export interface BloqueioUsuario {
+
+  id: number;
+
+  bloqueadorId: number;
+
+  bloqueadorNome: string;
+
+  bloqueadoId: number;
+
+  bloqueadoNome: string;
+
+  bloqueadoEmail: string;
+
+  bloqueadoEm: string;
 }

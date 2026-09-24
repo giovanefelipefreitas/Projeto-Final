@@ -57,6 +57,10 @@ export class PetCard
     false;
 
 
+  bloqueadoPeloDoador =
+    false;
+
+
   mensagem =
     '';
 
@@ -82,6 +86,7 @@ export class PetCard
 
 
     if (!usuario) {
+
       return;
     }
 
@@ -102,6 +107,24 @@ export class PetCard
           usuario.id
 
         );
+
+
+    if (
+      this.pet.usuarioId
+    ) {
+
+      this.bloqueadoPeloDoador =
+
+        this.adocaoService
+          .estaBloqueado(
+
+            this.pet.usuarioId,
+
+            usuario.id
+
+          );
+
+    }
   }
 
 
@@ -124,6 +147,17 @@ export class PetCard
     }
 
 
+    if (
+      this.bloqueadoPeloDoador
+    ) {
+
+      this.mensagem =
+        'Você não pode enviar uma solicitação para este responsável.';
+
+      return;
+    }
+
+
     const confirmou =
       confirm(
 
@@ -133,6 +167,7 @@ export class PetCard
 
 
     if (!confirmou) {
+
       return;
     }
 
@@ -178,6 +213,10 @@ export class PetCard
       ||
 
       this.interessado
+
+      ||
+
+      this.bloqueadoPeloDoador
 
       ||
 
@@ -228,6 +267,14 @@ export class PetCard
     ) {
 
       return 'Em processo de adoção';
+    }
+
+
+    if (
+      this.bloqueadoPeloDoador
+    ) {
+
+      return 'Indisponível para você';
     }
 
 

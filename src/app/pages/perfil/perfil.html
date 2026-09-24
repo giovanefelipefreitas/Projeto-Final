@@ -8,7 +8,6 @@
 
     <section class="cartao-perfil">
 
-
         <div class="avatar">
 
             {{
@@ -59,7 +58,6 @@
 
     <section class="alterar-senha">
 
-
         <div class="titulo-secao">
 
             <span>
@@ -82,7 +80,6 @@
             class="form-senha"
             (ngSubmit)="alterarSenha()"
         >
-
 
             <div class="campo-senha">
 
@@ -165,7 +162,6 @@
 
     <section class="minhas-publicacoes">
 
-
         <div class="titulo-secao">
 
             <span>
@@ -200,7 +196,6 @@
 
         <div class="lista-solicitacoes">
 
-
             <article
                 class="card-solicitacao"
 
@@ -210,7 +205,6 @@
                 "
             >
 
-
                 <img
                     [src]="solicitacao.petImagem"
                     [alt]="solicitacao.petNome"
@@ -218,7 +212,6 @@
 
 
                 <div class="dados-solicitacao">
-
 
                     <span class="status-solicitacao">
 
@@ -250,22 +243,18 @@
 
 
                     <p>
-
                         {{
                             solicitacao
                                 .interessadoEmail
                         }}
-
                     </p>
 
 
                     <p class="data">
-
                         {{
                             solicitacao
                                 .criadaEm
                         }}
-
                     </p>
 
 
@@ -277,7 +266,6 @@
                             === 'Pendente'
                         "
                     >
-
 
                         <button
                             type="button"
@@ -315,7 +303,6 @@
 
                     <button
                         type="button"
-
                         class="abrir-chat"
 
                         *ngIf="
@@ -348,7 +335,6 @@
 
     <section class="minhas-publicacoes">
 
-
         <div class="titulo-secao">
 
             <span>
@@ -379,7 +365,6 @@
 
         <div class="lista-solicitacoes">
 
-
             <article
                 class="card-solicitacao"
 
@@ -389,7 +374,6 @@
                 "
             >
 
-
                 <img
                     [src]="solicitacao.petImagem"
                     [alt]="solicitacao.petNome"
@@ -397,7 +381,6 @@
 
 
                 <div class="dados-solicitacao">
-
 
                     <span class="status-solicitacao">
 
@@ -439,7 +422,6 @@
 
                     <button
                         type="button"
-
                         class="abrir-chat"
 
                         *ngIf="
@@ -468,10 +450,109 @@
 
 
 
-    <!-- ANIMAIS PUBLICADOS -->
+    <!-- USUÁRIOS BLOQUEADOS -->
 
     <section class="minhas-publicacoes">
 
+        <div class="titulo-secao">
+
+            <span>
+                Segurança
+            </span>
+
+            <h2>
+                Usuários bloqueados
+            </h2>
+
+            <p>
+                Pessoas bloqueadas não podem
+                demonstrar interesse nos animais
+                publicados por você.
+            </p>
+
+        </div>
+
+
+        <div
+            class="sem-publicacoes"
+
+            *ngIf="
+                usuariosBloqueados.length
+                === 0
+            "
+        >
+
+            Você não bloqueou nenhum usuário.
+
+        </div>
+
+
+        <div class="lista-bloqueados">
+
+            <article
+                class="card-bloqueado"
+
+                *ngFor="
+                    let bloqueio
+                    of usuariosBloqueados
+                "
+            >
+
+                <div class="avatar-bloqueado">
+
+                    {{
+                        bloqueio.bloqueadoNome
+                            .charAt(0)
+                            .toUpperCase()
+                    }}
+
+                </div>
+
+
+                <div class="dados-bloqueado">
+
+                    <h3>
+                        {{ bloqueio.bloqueadoNome }}
+                    </h3>
+
+                    <p>
+                        {{ bloqueio.bloqueadoEmail }}
+                    </p>
+
+                    <small>
+                        Bloqueado em:
+                        {{ bloqueio.bloqueadoEm }}
+                    </small>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="desbloquear"
+
+                    (click)="
+                        desbloquearUsuario(
+                            bloqueio.bloqueadoId
+                        )
+                    "
+                >
+
+                    Desbloquear
+
+                </button>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ANIMAIS PUBLICADOS -->
+
+    <section class="minhas-publicacoes">
 
         <div class="titulo-secao">
 
@@ -502,7 +583,6 @@
 
         <div class="grid-publicacoes">
 
-
             <article
                 class="card-pet"
 
@@ -512,7 +592,6 @@
                 "
             >
 
-
                 <img
                     [src]="pet.imagem"
                     [alt]="pet.nome"
@@ -521,11 +600,8 @@
 
                 <div class="conteudo">
 
-
                     <span class="tipo">
-
                         {{ pet.especie }}
-
                     </span>
 
 
@@ -535,9 +611,7 @@
 
 
                     <p class="localizacao">
-
                         📍 {{ pet.bairro }}
-
                     </p>
 
 
@@ -562,6 +636,7 @@
                     >
 
                         Status:
+
                         <strong>
                             {{ pet.status }}
                         </strong>
@@ -570,15 +645,12 @@
 
 
                     <p class="descricao">
-
                         {{ pet.descricao }}
-
                     </p>
 
 
                     <button
                         class="botao-excluir"
-
                         type="button"
 
                         (click)="
@@ -605,7 +677,6 @@
     <!-- POSTS -->
 
     <section class="minhas-publicacoes">
-
 
         <div class="titulo-secao">
 
@@ -638,7 +709,6 @@
 
         <div class="lista-posts">
 
-
             <article
                 class="card-post"
 
@@ -648,21 +718,14 @@
                 "
             >
 
-
                 <div class="topo-post">
 
-
                     <span class="categoria">
-
                         {{ post.categoria }}
-
                     </span>
 
-
                     <span class="data">
-
                         {{ post.data }}
-
                     </span>
 
                 </div>
@@ -680,20 +743,12 @@
 
                 <div class="estatisticas">
 
-
                     <span>
-
-                        ❤️
-                        {{ post.curtidas }}
-
+                        ❤️ {{ post.curtidas }}
                     </span>
 
-
                     <span>
-
-                        💬
-                        {{ post.comentarios.length }}
-
+                        💬 {{ post.comentarios.length }}
                     </span>
 
                 </div>
@@ -701,7 +756,6 @@
 
                 <button
                     class="botao-excluir"
-
                     type="button"
 
                     (click)="
@@ -727,7 +781,6 @@
 
     <section class="acoes-conta">
 
-
         <h2>
             Conta
         </h2>
@@ -741,12 +794,9 @@
 
         <div class="acoes">
 
-
             <button
                 class="botao secundario"
-
                 type="button"
-
                 (click)="logout()"
             >
 
@@ -757,9 +807,7 @@
 
             <button
                 class="excluir"
-
                 type="button"
-
                 (click)="excluirConta()"
             >
 

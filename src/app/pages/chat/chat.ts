@@ -232,14 +232,7 @@ export class Chat
 
     if (
       !this.usuario ||
-      !this.solicitacao
-    ) {
-
-      return;
-    }
-
-
-    if (
+      !this.solicitacao ||
       !this.ehDoador
     ) {
 
@@ -250,7 +243,7 @@ export class Chat
     const confirmou =
       confirm(
 
-        'Deseja cancelar este processo de adoção? O animal voltará a ficar disponível para outras pessoas.'
+        'Deseja cancelar este processo de adoção? O animal voltará a ficar disponível.'
 
       );
 
@@ -272,26 +265,20 @@ export class Chat
         );
 
 
+    alert(
+      resultado.mensagem
+    );
+
+
     if (
       resultado.ok
     ) {
-
-      alert(
-        resultado.mensagem
-      );
-
 
       this.router.navigate(
         ['/perfil']
       );
 
-      return;
     }
-
-
-    alert(
-      resultado.mensagem
-    );
   }
 
 
@@ -299,14 +286,7 @@ export class Chat
 
     if (
       !this.usuario ||
-      !this.solicitacao
-    ) {
-
-      return;
-    }
-
-
-    if (
+      !this.solicitacao ||
       !this.ehDoador
     ) {
 
@@ -339,26 +319,74 @@ export class Chat
         );
 
 
+    alert(
+      resultado.mensagem
+    );
+
+
     if (
       resultado.ok
     ) {
-
-      alert(
-        resultado.mensagem
-      );
-
 
       this.router.navigate(
         ['/perfil']
       );
 
+    }
+  }
+
+
+  bloquearInteressado(): void {
+
+    if (
+      !this.usuario ||
+      !this.solicitacao ||
+      !this.ehDoador
+    ) {
+
       return;
     }
+
+
+    const confirmou =
+      confirm(
+
+        `Deseja bloquear ${this.solicitacao.interessadoNome}? A conversa será encerrada e esta pessoa não poderá mais solicitar seus animais para adoção.`
+
+      );
+
+
+    if (!confirmou) {
+
+      return;
+    }
+
+
+    const resultado =
+      this.adocaoService
+        .bloquearUsuario(
+
+          this.solicitacao.id,
+
+          this.usuario
+
+        );
 
 
     alert(
       resultado.mensagem
     );
+
+
+    if (
+      resultado.ok
+    ) {
+
+      this.router.navigate(
+        ['/perfil']
+      );
+
+    }
   }
 
 
@@ -382,11 +410,17 @@ export class Chat
 
     if (
       event.key ===
-      'adotassa_solicitacoes'
+        'adotassa_solicitacoes'
+
+      ||
+
+      event.key ===
+        'adotassa_bloqueios'
     ) {
 
       if (
-        !this.solicitacao
+        !this.solicitacao ||
+        !this.usuario
       ) {
 
         return;
@@ -402,17 +436,19 @@ export class Chat
           );
 
 
-      /*
-        Se a conversa for cancelada
-        ou a adoção for concluída
-        pela outra aba, o outro usuário
-        sai automaticamente do chat.
-      */
-
       if (
-        !atualizada ||
-        atualizada.status !==
-          'Aceita'
+        !atualizada
+
+        ||
+
+        !this.adocaoService
+          .podeAcessarChat(
+
+            this.solicitacao.id,
+
+            this.usuario.id
+
+          )
       ) {
 
         this.router.navigate(

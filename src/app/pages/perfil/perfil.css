@@ -115,41 +115,6 @@
 }
 
 
-.alterar-senha .titulo-secao {
-    margin-bottom: 25px;
-}
-
-
-.alterar-senha
-.titulo-secao span {
-    color: var(--laranja-escuro);
-
-    font-size: .8rem;
-
-    font-weight: 800;
-
-    text-transform: uppercase;
-}
-
-
-.alterar-senha
-.titulo-secao h2 {
-    margin-top: 5px;
-
-    color: var(--azul-escuro);
-}
-
-
-.alterar-senha
-.titulo-secao p {
-    margin-top: 8px;
-
-    color: var(--texto-suave);
-
-    line-height: 1.5;
-}
-
-
 .form-senha {
     display: grid;
 
@@ -213,11 +178,6 @@
 }
 
 
-.botao-alterar-senha:hover {
-    opacity: .9;
-}
-
-
 .mensagem-senha {
     padding: 11px 14px;
 
@@ -238,7 +198,7 @@
 }
 
 
-/* PUBLICAÇÕES */
+/* SEÇÕES */
 
 .minhas-publicacoes {
     margin-top: 55px;
@@ -429,6 +389,104 @@
 }
 
 
+/* USUÁRIOS BLOQUEADOS */
+
+.lista-bloqueados {
+    display: grid;
+
+    gap: 15px;
+}
+
+
+.card-bloqueado {
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    padding: 20px;
+
+    border-radius: 16px;
+
+    background: white;
+
+    box-shadow: var(--sombra);
+}
+
+
+.avatar-bloqueado {
+    width: 55px;
+
+    height: 55px;
+
+    flex-shrink: 0;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: #fff1f0;
+
+    color: #b42318;
+
+    font-size: 1.3rem;
+
+    font-weight: 800;
+}
+
+
+.dados-bloqueado {
+    flex: 1;
+}
+
+
+.dados-bloqueado h3 {
+    color: var(--azul-escuro);
+}
+
+
+.dados-bloqueado p {
+    margin-top: 4px;
+
+    color: var(--texto-suave);
+}
+
+
+.dados-bloqueado small {
+    display: block;
+
+    margin-top: 6px;
+
+    color: var(--texto-suave);
+}
+
+
+.desbloquear {
+    padding: 9px 14px;
+
+    border:
+        1px solid #667085;
+
+    border-radius: 9px;
+
+    background: white;
+
+    color: #344054;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.desbloquear:hover {
+    background: #f2f4f7;
+}
+
+
 /* PETS */
 
 .grid-publicacoes {
@@ -594,7 +652,7 @@
 }
 
 
-/* EXCLUIR */
+/* EXCLUIR PUBLICAÇÃO */
 
 .botao-excluir {
     margin-top: 18px;
@@ -694,11 +752,7 @@
     }
 
 
-    .cartao-perfil {
-        padding: 25px;
-    }
-
-
+    .cartao-perfil,
     .alterar-senha {
         padding: 22px;
     }
@@ -715,8 +769,7 @@
 
 
     .grid-publicacoes {
-        grid-template-columns:
-            1fr;
+        grid-template-columns: 1fr;
     }
 
 
@@ -726,11 +779,21 @@
 
 
     .topo-post {
-        align-items:
-            flex-start;
+        align-items: flex-start;
 
-        flex-direction:
-            column;
+        flex-direction: column;
+    }
+
+
+    .card-bloqueado {
+        align-items: flex-start;
+
+        flex-wrap: wrap;
+    }
+
+
+    .desbloquear {
+        width: 100%;
     }
 
 }
@@ -739,8 +802,7 @@
 @media (max-width: 600px) {
 
     .card-solicitacao {
-        grid-template-columns:
-            1fr;
+        grid-template-columns: 1fr;
     }
 
 

@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 
-import {
-  Pet
-} from '../models/pet.model';
+import { Pet } from '../models/pet.model';
 
 import {
   SolicitacaoAdocao,
-  MensagemChat
+  MensagemChat,
+  BloqueioUsuario
 } from '../models/solicitacao.model';
 
 import {
@@ -29,10 +28,12 @@ export class AdocaoService {
   private readonly chaveMensagens =
     'adotassa_mensagens';
 
+  private readonly chaveBloqueios =
+    'adotassa_bloqueios';
+
 
   constructor(
-    private petService:
-      PetService
+    private petService: PetService
   ) {}
 
 
@@ -44,32 +45,22 @@ export class AdocaoService {
     mensagem: string;
   } {
 
-    if (
-      pet.demonstrativo
-    ) {
+    if (pet.demonstrativo) {
 
       return {
-
         ok: false,
-
         mensagem:
           'Este animal é demonstrativo e não possui responsável cadastrado.'
-
       };
     }
 
 
-    if (
-      !pet.usuarioId
-    ) {
+    if (!pet.usuarioId) {
 
       return {
-
         ok: false,
-
         mensagem:
           'Não foi possível identificar o responsável por este animal.'
-
       };
     }
 
@@ -80,12 +71,24 @@ export class AdocaoService {
     ) {
 
       return {
-
         ok: false,
-
         mensagem:
           'Você não pode solicitar a adoção de um animal publicado por você.'
+      };
+    }
 
+
+    if (
+      this.estaBloqueado(
+        pet.usuarioId,
+        interessado.id
+      )
+    ) {
+
+      return {
+        ok: false,
+        mensagem:
+          'Você não pode enviar uma solicitação de adoção para este responsável.'
       };
     }
 
@@ -96,12 +99,9 @@ export class AdocaoService {
     ) {
 
       return {
-
         ok: false,
-
         mensagem:
           'Este animal já está em processo de adoção.'
-
       };
     }
 
@@ -112,12 +112,9 @@ export class AdocaoService {
     ) {
 
       return {
-
         ok: false,
-
         mensagem:
           'Este animal já foi adotado.'
-
       };
     }
 
@@ -132,10 +129,14 @@ export class AdocaoService {
         solicitacao =>
 
           solicitacao.petId ===
-            pet.id &&
+            pet.id
+
+          &&
 
           solicitacao.interessadoId ===
-            interessado.id &&
+            interessado.id
+
+          &&
 
           (
             solicitacao.status ===
@@ -153,12 +154,9 @@ export class AdocaoService {
     if (existente) {
 
       return {
-
         ok: false,
-
         mensagem:
           'Você já demonstrou interesse neste animal.'
-
       };
     }
 
@@ -199,9 +197,7 @@ export class AdocaoService {
 
       criadaEm:
         new Date()
-          .toLocaleString(
-            'pt-BR'
-          )
+          .toLocaleString('pt-BR')
 
     };
 
@@ -217,18 +213,14 @@ export class AdocaoService {
 
 
     return {
-
       ok: true,
-
       mensagem:
         'Interesse enviado ao responsável pelo animal!'
-
     };
   }
 
 
-  listar():
-    SolicitacaoAdocao[] {
+  listar(): SolicitacaoAdocao[] {
 
     const valor =
       localStorage.getItem(
@@ -317,12 +309,6 @@ export class AdocaoService {
       'Aceita';
 
 
-    /*
-      Quando uma solicitação é aceita,
-      as outras solicitações pendentes
-      desse animal são recusadas.
-    */
-
     solicitacoes.forEach(
 
       item => {
@@ -330,10 +316,14 @@ export class AdocaoService {
         if (
 
           item.petId ===
-            solicitacao.petId &&
+            solicitacao.petId
+
+          &&
 
           item.id !==
-            solicitacao.id &&
+            solicitacao.id
+
+          &&
 
           item.status ===
             'Pendente'
@@ -342,7 +332,6 @@ export class AdocaoService {
 
           item.status =
             'Recusada';
-
         }
 
       }
@@ -438,12 +427,9 @@ export class AdocaoService {
     if (!solicitacao) {
 
       return {
-
         ok: false,
-
         mensagem:
           'Solicitação não encontrada.'
-
       };
     }
 
@@ -454,12 +440,9 @@ export class AdocaoService {
     ) {
 
       return {
-
         ok: false,
-
         mensagem:
-          'Esta conversa não pode mais ser cancelada.'
-
+          'Este processo não pode mais ser cancelado.'
       };
     }
 
@@ -473,11 +456,6 @@ export class AdocaoService {
     );
 
 
-    /*
-      O animal volta para a página
-      de adoção como disponível.
-    */
-
     this.petService
       .alterarStatus(
 
@@ -488,23 +466,15 @@ export class AdocaoService {
       );
 
 
-    /*
-      As mensagens daquela conversa
-      são apagadas.
-    */
-
     this.excluirMensagensDaSolicitacao(
       solicitacao.id
     );
 
 
     return {
-
       ok: true,
-
       mensagem:
-        'Conversa cancelada. O animal está disponível para adoção novamente.'
-
+        'Processo cancelado. O animal está disponível para adoção novamente.'
     };
   }
 
@@ -535,12 +505,9 @@ export class AdocaoService {
     if (!solicitacao) {
 
       return {
-
         ok: false,
-
         mensagem:
           'Solicitação não encontrada.'
-
       };
     }
 
@@ -551,12 +518,9 @@ export class AdocaoService {
     ) {
 
       return {
-
         ok: false,
-
         mensagem:
           'Esta adoção não pode ser concluída.'
-
       };
     }
 
@@ -581,13 +545,288 @@ export class AdocaoService {
 
 
     return {
-
       ok: true,
-
       mensagem:
         'A adoção foi concluída com sucesso.'
-
     };
+  }
+
+
+  bloquearUsuario(
+    solicitacaoId: number,
+    doador: UsuarioSessao
+  ): {
+    ok: boolean;
+    mensagem: string;
+  } {
+
+    const solicitacoes =
+      this.listar();
+
+
+    const solicitacao =
+      solicitacoes.find(
+
+        item =>
+          item.id ===
+            solicitacaoId
+
+          &&
+
+          item.doadorId ===
+            doador.id
+
+      );
+
+
+    if (!solicitacao) {
+
+      return {
+        ok: false,
+        mensagem:
+          'Solicitação não encontrada.'
+      };
+    }
+
+
+    if (
+      solicitacao.status !==
+      'Aceita'
+    ) {
+
+      return {
+        ok: false,
+        mensagem:
+          'Este usuário não pode ser bloqueado por esta conversa.'
+      };
+    }
+
+
+    const interessadoId =
+      solicitacao.interessadoId;
+
+
+    const bloqueios =
+      this.listarBloqueios();
+
+
+    const jaBloqueado =
+      bloqueios.some(
+
+        bloqueio =>
+
+          bloqueio.bloqueadorId ===
+            doador.id
+
+          &&
+
+          bloqueio.bloqueadoId ===
+            interessadoId
+
+      );
+
+
+    if (!jaBloqueado) {
+
+      const novoBloqueio:
+        BloqueioUsuario = {
+
+        id:
+          Date.now(),
+
+        bloqueadorId:
+          doador.id,
+
+        bloqueadorNome:
+          doador.nome,
+
+        bloqueadoId:
+          solicitacao.interessadoId,
+
+        bloqueadoNome:
+          solicitacao.interessadoNome,
+
+        bloqueadoEmail:
+          solicitacao.interessadoEmail,
+
+        bloqueadoEm:
+          new Date()
+            .toLocaleString(
+              'pt-BR'
+            )
+
+      };
+
+
+      bloqueios.unshift(
+        novoBloqueio
+      );
+
+
+      this.salvarBloqueios(
+        bloqueios
+      );
+    }
+
+
+    const idsConversas:
+      number[] = [];
+
+
+    solicitacoes.forEach(
+
+      item => {
+
+        if (
+
+          item.doadorId ===
+            doador.id
+
+          &&
+
+          item.interessadoId ===
+            interessadoId
+
+          &&
+
+          (
+            item.status ===
+              'Pendente'
+
+            ||
+
+            item.status ===
+              'Aceita'
+          )
+
+        ) {
+
+          if (
+            item.status ===
+            'Aceita'
+          ) {
+
+            this.petService
+              .alterarStatus(
+
+                item.petId,
+
+                'Disponível'
+
+              );
+
+          }
+
+
+          item.status =
+            'Bloqueada';
+
+
+          idsConversas.push(
+            item.id
+          );
+        }
+
+      }
+
+    );
+
+
+    this.salvarSolicitacoes(
+      solicitacoes
+    );
+
+
+    this.excluirMensagensPorIds(
+      idsConversas
+    );
+
+
+    return {
+      ok: true,
+      mensagem:
+        `${solicitacao.interessadoNome} foi bloqueado. O animal voltou a ficar disponível para adoção.`
+    };
+  }
+
+
+  listarBloqueadosPor(
+    usuarioId: number
+  ): BloqueioUsuario[] {
+
+    return this.listarBloqueios()
+      .filter(
+
+        bloqueio =>
+          bloqueio.bloqueadorId ===
+          usuarioId
+
+      );
+  }
+
+
+  estaBloqueado(
+    bloqueadorId: number,
+    bloqueadoId: number
+  ): boolean {
+
+    return this.listarBloqueios()
+      .some(
+
+        bloqueio =>
+
+          bloqueio.bloqueadorId ===
+            bloqueadorId
+
+          &&
+
+          bloqueio.bloqueadoId ===
+            bloqueadoId
+
+      );
+  }
+
+
+  desbloquearUsuario(
+    bloqueadorId: number,
+    bloqueadoId: number
+  ): boolean {
+
+    const bloqueios =
+      this.listarBloqueios();
+
+
+    const quantidadeAntes =
+      bloqueios.length;
+
+
+    const novosBloqueios =
+      bloqueios.filter(
+
+        bloqueio =>
+
+          !(
+            bloqueio.bloqueadorId ===
+              bloqueadorId
+
+            &&
+
+            bloqueio.bloqueadoId ===
+              bloqueadoId
+          )
+
+      );
+
+
+    this.salvarBloqueios(
+      novosBloqueios
+    );
+
+
+    return (
+      novosBloqueios.length <
+      quantidadeAntes
+    );
   }
 
 
@@ -596,27 +835,32 @@ export class AdocaoService {
     usuarioId: number
   ): boolean {
 
-    return this.listar().some(
+    return this.listar()
+      .some(
 
-      solicitacao =>
+        solicitacao =>
 
-        solicitacao.petId ===
-          petId &&
+          solicitacao.petId ===
+            petId
 
-        solicitacao.interessadoId ===
-          usuarioId &&
+          &&
 
-        (
-          solicitacao.status ===
-            'Pendente'
+          solicitacao.interessadoId ===
+            usuarioId
 
-          ||
+          &&
 
-          solicitacao.status ===
-            'Aceita'
-        )
+          (
+            solicitacao.status ===
+              'Pendente'
 
-    );
+            ||
+
+            solicitacao.status ===
+              'Aceita'
+          )
+
+      );
   }
 
 
@@ -670,6 +914,20 @@ export class AdocaoService {
 
 
     if (!participante) {
+
+      return false;
+    }
+
+
+    if (
+      this.estaBloqueado(
+
+        solicitacao.doadorId,
+
+        solicitacao.interessadoId
+
+      )
+    ) {
 
       return false;
     }
@@ -745,6 +1003,20 @@ export class AdocaoService {
       !solicitacao ||
       solicitacao.status !==
         'Aceita'
+    ) {
+
+      return false;
+    }
+
+
+    if (
+      this.estaBloqueado(
+
+        solicitacao.doadorId,
+
+        solicitacao.interessadoId
+
+      )
     ) {
 
       return false;
@@ -892,6 +1164,23 @@ export class AdocaoService {
         );
 
 
+    const bloqueios =
+      this.listarBloqueios()
+        .filter(
+
+          bloqueio =>
+
+            bloqueio.bloqueadorId !==
+              usuarioId
+
+            &&
+
+            bloqueio.bloqueadoId !==
+              usuarioId
+
+        );
+
+
     this.salvarSolicitacoes(
       novasSolicitacoes
     );
@@ -903,6 +1192,43 @@ export class AdocaoService {
 
       JSON.stringify(
         mensagens
+      )
+
+    );
+
+
+    this.salvarBloqueios(
+      bloqueios
+    );
+  }
+
+
+  private listarBloqueios():
+    BloqueioUsuario[] {
+
+    const valor =
+      localStorage.getItem(
+        this.chaveBloqueios
+      );
+
+
+    return valor
+      ? JSON.parse(valor)
+      : [];
+  }
+
+
+  private salvarBloqueios(
+    bloqueios:
+      BloqueioUsuario[]
+  ): void {
+
+    localStorage.setItem(
+
+      this.chaveBloqueios,
+
+      JSON.stringify(
+        bloqueios
       )
 
     );
@@ -920,6 +1246,34 @@ export class AdocaoService {
           mensagem =>
             mensagem.solicitacaoId !==
             solicitacaoId
+
+        );
+
+
+    localStorage.setItem(
+
+      this.chaveMensagens,
+
+      JSON.stringify(
+        mensagens
+      )
+
+    );
+  }
+
+
+  private excluirMensagensPorIds(
+    solicitacoesIds: number[]
+  ): void {
+
+    const mensagens =
+      this.listarTodasMensagens()
+        .filter(
+
+          mensagem =>
+            !solicitacoesIds.includes(
+              mensagem.solicitacaoId
+            )
 
         );
 

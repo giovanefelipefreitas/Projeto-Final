@@ -51,7 +51,8 @@ import {
 } from '../../models/post.model';
 
 import {
-  SolicitacaoAdocao
+  SolicitacaoAdocao,
+  BloqueioUsuario
 } from '../../models/solicitacao.model';
 
 
@@ -94,15 +95,28 @@ export class Perfil {
     SolicitacaoAdocao[] = [];
 
 
-  senhaAtual = '';
+  usuariosBloqueados:
+    BloqueioUsuario[] = [];
 
-  novaSenha = '';
 
-  confirmarNovaSenha = '';
+  senhaAtual =
+    '';
 
-  mensagemSenha = '';
 
-  senhaAlterada = false;
+  novaSenha =
+    '';
+
+
+  confirmarNovaSenha =
+    '';
+
+
+  mensagemSenha =
+    '';
+
+
+  senhaAlterada =
+    false;
 
 
   constructor(
@@ -131,12 +145,15 @@ export class Perfil {
     this.carregarPublicacoes();
 
     this.carregarSolicitacoes();
+
+    this.carregarBloqueios();
   }
 
 
   carregarPublicacoes(): void {
 
     if (!this.usuario) {
+
       return;
     }
 
@@ -159,6 +176,7 @@ export class Perfil {
   carregarSolicitacoes(): void {
 
     if (!this.usuario) {
+
       return;
     }
 
@@ -178,11 +196,85 @@ export class Perfil {
   }
 
 
+  carregarBloqueios(): void {
+
+    if (!this.usuario) {
+
+      return;
+    }
+
+
+    this.usuariosBloqueados =
+      this.adocaoService
+        .listarBloqueadosPor(
+          this.usuario.id
+        );
+  }
+
+
+  desbloquearUsuario(
+    usuarioId: number
+  ): void {
+
+    if (!this.usuario) {
+
+      return;
+    }
+
+
+    const bloqueio =
+      this.usuariosBloqueados
+        .find(
+
+          item =>
+            item.bloqueadoId ===
+            usuarioId
+
+        );
+
+
+    if (!bloqueio) {
+
+      return;
+    }
+
+
+    const confirmou =
+      confirm(
+
+        `Deseja desbloquear ${bloqueio.bloqueadoNome}?`
+
+      );
+
+
+    if (!confirmou) {
+
+      return;
+    }
+
+
+    this.adocaoService
+      .desbloquearUsuario(
+
+        this.usuario.id,
+
+        usuarioId
+
+      );
+
+
+    this.carregarBloqueios();
+  }
+
+
   alterarSenha(): void {
 
-    this.mensagemSenha = '';
+    this.mensagemSenha =
+      '';
 
-    this.senhaAlterada = false;
+
+    this.senhaAlterada =
+      false;
 
 
     if (
@@ -232,11 +324,14 @@ export class Perfil {
       resultado.ok
     ) {
 
-      this.senhaAtual = '';
+      this.senhaAtual =
+        '';
 
-      this.novaSenha = '';
+      this.novaSenha =
+        '';
 
-      this.confirmarNovaSenha = '';
+      this.confirmarNovaSenha =
+        '';
 
     }
   }
@@ -247,25 +342,32 @@ export class Perfil {
   ): void {
 
     if (!this.usuario) {
+
       return;
     }
 
 
     const confirmou =
       confirm(
+
         'Deseja aceitar esta solicitação de adoção?'
+
       );
 
 
     if (!confirmou) {
+
       return;
     }
 
 
     this.adocaoService
       .aceitar(
+
         id,
+
         this.usuario.id
+
       );
 
 
@@ -280,25 +382,32 @@ export class Perfil {
   ): void {
 
     if (!this.usuario) {
+
       return;
     }
 
 
     const confirmou =
       confirm(
+
         'Deseja recusar esta solicitação?'
+
       );
 
 
     if (!confirmou) {
+
       return;
     }
 
 
     this.adocaoService
       .recusar(
+
         id,
+
         this.usuario.id
+
       );
 
 
@@ -321,17 +430,21 @@ export class Perfil {
   ): void {
 
     if (!this.usuario) {
+
       return;
     }
 
 
     const confirmou =
       confirm(
+
         'Deseja realmente apagar esta publicação de adoção?'
+
       );
 
 
     if (!confirmou) {
+
       return;
     }
 
@@ -342,8 +455,11 @@ export class Perfil {
 
     this.petService
       .excluirDoUsuario(
+
         id,
+
         this.usuario.id
+
       );
 
 
@@ -358,25 +474,32 @@ export class Perfil {
   ): void {
 
     if (!this.usuario) {
+
       return;
     }
 
 
     const confirmou =
       confirm(
+
         'Deseja realmente apagar esta publicação da comunidade?'
+
       );
 
 
     if (!confirmou) {
+
       return;
     }
 
 
     this.comunidadeService
       .excluirDoUsuario(
+
         id,
+
         this.usuario.id
+
       );
 
 
@@ -399,11 +522,14 @@ export class Perfil {
 
     const confirmou =
       confirm(
+
         'Deseja realmente excluir sua conta deste navegador?'
+
       );
 
 
     if (!confirmou) {
+
       return;
     }
 
@@ -416,37 +542,38 @@ export class Perfil {
         );
 
 
-      this.petsPublicados.forEach(
+      this.petsPublicados
+        .forEach(
 
-        pet =>
+          pet =>
 
-          this.petService
-            .excluirDoUsuario(
+            this.petService
+              .excluirDoUsuario(
 
-              pet.id,
+                pet.id,
 
-              this.usuario!.id
+                this.usuario!.id
 
-            )
+              )
 
-      );
+        );
 
 
-      this.postsPublicados.forEach(
+      this.postsPublicados
+        .forEach(
 
-        post =>
+          post =>
 
-          this.comunidadeService
-            .excluirDoUsuario(
+            this.comunidadeService
+              .excluirDoUsuario(
 
-              post.id,
+                post.id,
 
-              this.usuario!.id
+                this.usuario!.id
 
-            )
+              )
 
-      );
-
+        );
     }
 
 

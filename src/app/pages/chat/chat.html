@@ -14,13 +14,8 @@
 
 
             <img
-                [src]="
-                    solicitacao.petImagem
-                "
-
-                [alt]="
-                    solicitacao.petNome
-                "
+                [src]="solicitacao.petImagem"
+                [alt]="solicitacao.petNome"
             >
 
 
@@ -50,11 +45,6 @@
             </div>
 
 
-            <!--
-                Somente quem publicou
-                o animal vê estas opções.
-            -->
-
             <div
                 class="acoes-processo"
                 *ngIf="ehDoador"
@@ -64,9 +54,7 @@
                 <button
                     type="button"
                     class="concluir-adocao"
-                    (click)="
-                        marcarComoAdotado()
-                    "
+                    (click)="marcarComoAdotado()"
                 >
 
                     ✓ Marcar como adotado
@@ -77,12 +65,21 @@
                 <button
                     type="button"
                     class="cancelar-processo"
-                    (click)="
-                        cancelarProcesso()
-                    "
+                    (click)="cancelarProcesso()"
                 >
 
                     ✕ Cancelar processo
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="bloquear-usuario"
+                    (click)="bloquearInteressado()"
+                >
+
+                    🚫 Bloquear usuário
 
                 </button>
 
@@ -93,13 +90,11 @@
 
         <div class="aviso-chat">
 
-            💡 Use este espaço para
-            conversar sobre os detalhes
-            da adoção.
+            💡 Use este espaço para conversar
+            sobre os detalhes da adoção.
 
             Caso combinem um encontro,
-            prefiram um local público e
-            seguro.
+            prefiram um local público e seguro.
 
         </div>
 
@@ -111,13 +106,11 @@
                 class="sem-mensagens"
 
                 *ngIf="
-                    mensagens.length
-                    === 0
+                    mensagens.length === 0
                 "
             >
 
                 Nenhuma mensagem ainda.
-
                 Comece a conversa!
 
             </div>
@@ -139,29 +132,17 @@
 
 
                 <strong>
-
-                    {{
-                        mensagem.autorNome
-                    }}
-
+                    {{ mensagem.autorNome }}
                 </strong>
 
 
                 <p>
-
-                    {{
-                        mensagem.texto
-                    }}
-
+                    {{ mensagem.texto }}
                 </p>
 
 
                 <small>
-
-                    {{
-                        mensagem.enviadaEm
-                    }}
-
+                    {{ mensagem.enviadaEm }}
                 </small>
 
             </div>
