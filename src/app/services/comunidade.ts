@@ -16,8 +16,41 @@ export class ComunidadeService {
     'adotassa_posts';
 
 
+  private readonly postFeira:
+    Post = {
+
+    id: 104,
+
+    autor:
+      'Shopping Bela Vista',
+
+    categoria:
+      'Evento',
+
+    texto:
+      'Feira de Adoção Pet no Shopping Bela Vista. O evento acontece no sábado (22), das 10h às 14h, na entrada principal do shopping. Uma oportunidade para conhecer animais que estão esperando por uma nova família.',
+
+    imagem:
+      '/img/feira-adocao.jpeg',
+
+    curtidas:
+      27,
+
+    data:
+      'Evento',
+
+    comentarios: [
+      'Que iniciativa maravilhosa! 🐾'
+    ]
+
+  };
+
+
   private readonly iniciais:
     Post[] = [
+
+    this.postFeira,
+
 
     {
       id: 101,
@@ -101,10 +134,91 @@ export class ComunidadeService {
 
     if (valor) {
 
-      return JSON.parse(
-        valor
-      ) as Post[];
+      try {
 
+        const posts =
+          JSON.parse(
+            valor
+          ) as Post[];
+
+
+        const indicePostFeira =
+          posts.findIndex(
+
+            post =>
+              post.id ===
+              this.postFeira.id
+
+          );
+
+
+        /*
+          Se o post ainda não existe,
+          adicionamos.
+        */
+
+        if (
+          indicePostFeira === -1
+        ) {
+
+          posts.unshift(
+            this.postFeira
+          );
+
+        } else {
+
+          /*
+            Se ele já existe no localStorage,
+            atualizamos os dados dele.
+
+            Isso também corrige o caminho
+            da imagem antiga.
+          */
+
+          const postAntigo =
+            posts[
+              indicePostFeira
+            ];
+
+
+          posts[
+            indicePostFeira
+          ] = {
+
+            ...this.postFeira,
+
+            curtidas:
+              postAntigo.curtidas ??
+              this.postFeira.curtidas,
+
+            comentarios:
+              postAntigo.comentarios ??
+              this.postFeira.comentarios
+
+          };
+
+        }
+
+
+        this.salvar(
+          posts
+        );
+
+
+        return posts;
+
+      } catch {
+
+        this.salvar(
+          this.iniciais
+        );
+
+
+        return [
+          ...this.iniciais
+        ];
+
+      }
     }
 
 
@@ -131,7 +245,8 @@ export class ComunidadeService {
       this.listar();
 
 
-    const novoPost: Post = {
+    const novoPost:
+      Post = {
 
       id:
         Date.now(),
